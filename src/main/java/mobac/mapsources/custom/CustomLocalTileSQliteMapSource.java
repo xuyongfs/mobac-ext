@@ -40,6 +40,7 @@ import mobac.gui.mapview.PreviewMap;
 import mobac.mapsources.mapspace.MapSpaceFactory;
 import mobac.program.interfaces.FileBasedMapSource;
 import mobac.program.interfaces.MapSpace;
+import mobac.program.interfaces.MapSpace.MapSpaceType;
 import mobac.program.jaxb.ColorAdapter;
 import mobac.program.model.MapSourceLoaderInfo;
 import mobac.program.model.TileImageType;
@@ -97,7 +98,7 @@ public class CustomLocalTileSQliteMapSource implements FileBasedMapSource {
 	 */
 	private Connection conn = null;
 
-	private final MapSpace mapSpace = MapSpaceFactory.getInstance(256, true);
+	private final MapSpace mapSpace = MapSpaceFactory.getInstance(256, MapSpaceType.msMercatorSpherical);
 
 	public CustomLocalTileSQliteMapSource() {
 		super();

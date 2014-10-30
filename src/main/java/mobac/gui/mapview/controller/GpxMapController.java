@@ -19,6 +19,7 @@ package mobac.gui.mapview.controller;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Point2D;
 import java.math.BigDecimal;
 
 import javax.swing.JOptionPane;
@@ -62,8 +63,12 @@ public class GpxMapController extends JMapController implements MouseListener {
 			int maxPixel = mapSpace.getMaxPixels(map.getZoom());
 			if (p.x < 0 || p.x > maxPixel || p.y < 0 || p.y > maxPixel)
 				return; // outside of world region
-			double lon = mapSpace.cXToLon(p.x, map.getZoom());
-			double lat = mapSpace.cYToLat(p.y, map.getZoom());
+			//double lon = mapSpace.cXToLon(p.x, map.getZoom());
+			//double lat = mapSpace.cYToLat(p.y, map.getZoom());
+			Point2D.Double pt = mapSpace.cXYToLonLat(p.x, p.y, map.getZoom());
+			double lon = pt.x;
+			double lat = pt.y;
+			
 			String name = JOptionPane.showInputDialog(null, I18nUtils.localizedStringForKey("dlg_gpx_inpu_point_name"));
 			if (name == null)
 				return;

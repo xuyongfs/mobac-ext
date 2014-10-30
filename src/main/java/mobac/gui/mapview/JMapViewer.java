@@ -191,8 +191,11 @@ public class JMapViewer extends JPanel implements TileLoaderListener {
 	public void setDisplayPositionByLatLon(Point mapPoint, double lat, double lon, int zoom) {
 		zoom = Math.max(Math.min(zoom, mapSource.getMaxZoom()), mapSource.getMinZoom());
 		MapSpace mapSpace = mapSource.getMapSpace();
-		int x = mapSpace.cLonToX(lon, zoom);
-		int y = mapSpace.cLatToY(lat, zoom);
+		//int x = mapSpace.cLonToX(lon, zoom);
+		//int y = mapSpace.cLatToY(lat, zoom);
+		Point p = mapSpace.cLonLatToXY(lon, lat, zoom);
+		int x = p.x;
+		int y = p.y;
 		setDisplayPosition(mapPoint, x, y, zoom);
 	}
 
@@ -259,18 +262,22 @@ public class JMapViewer extends JPanel implements TileLoaderListener {
 
 	public Point2D.Double getPosition() {
 		MapSpace mapSpace = mapSource.getMapSpace();
-		double lon = mapSpace.cXToLon(center.x, zoom);
-		double lat = mapSpace.cYToLat(center.y, zoom);
-		return new Point2D.Double(lat, lon);
+		//double lon = mapSpace.cXToLon(center.x, zoom);
+		//double lat = mapSpace.cYToLat(center.y, zoom);
+		//return new Point2D.Double(lat, lon);
+		Point2D.Double p = mapSpace.cXYToLonLat(center.x, center.y, zoom);
+		return new Point2D.Double(p.y, p.x);
 	}
 
 	public Point2D.Double getPosition(Point mapPoint) {
 		MapSpace mapSpace = mapSource.getMapSpace();
 		int x = center.x + mapPoint.x - getWidth() / 2;
 		int y = center.y + mapPoint.y - getHeight() / 2;
-		double lon = mapSpace.cXToLon(x, zoom);
-		double lat = mapSpace.cYToLat(y, zoom);
-		return new Point2D.Double(lat, lon);
+		//double lon = mapSpace.cXToLon(x, zoom);
+		//double lat = mapSpace.cYToLat(y, zoom);
+		//return new Point2D.Double(lat, lon);
+		Point2D.Double p = mapSpace.cXYToLonLat(x, y, zoom);
+		return new Point2D.Double(p.y, p.x);
 	}
 
 	/**
@@ -282,8 +289,11 @@ public class JMapViewer extends JPanel implements TileLoaderListener {
 	 */
 	public Point getMapPosition(double lat, double lon) {
 		MapSpace mapSpace = mapSource.getMapSpace();
-		int x = mapSpace.cLonToX(lon, zoom);
-		int y = mapSpace.cLatToY(lat, zoom);
+		//int x = mapSpace.cLonToX(lon, zoom);
+		//int y = mapSpace.cLatToY(lat, zoom);
+		Point p = mapSpace.cLonLatToXY(lon, lat, zoom);
+		int x = p.x;
+		int y = p.y;
 		x -= center.x - getWidth() / 2;
 		y -= center.y - getHeight() / 2;
 		if (x < 0 || y < 0 || x > getWidth() || y > getHeight())

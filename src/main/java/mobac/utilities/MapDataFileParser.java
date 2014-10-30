@@ -16,6 +16,7 @@
  ******************************************************************************/
 package mobac.utilities;
 
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -104,8 +105,12 @@ public class MapDataFileParser {
 		System.out.println(String.format("Min point (lat/lon): %4f %4f", lat_min, lon_min));
 
 		MapSpace ms = MercatorPower2MapSpace.INSTANCE_256;
-		int x1 = ms.cLonToX(lon_max, JMapViewer.MAX_ZOOM);
-		int x2 = ms.cLonToX(lon_min, JMapViewer.MAX_ZOOM);
+		//int x1 = ms.cLonToX(lon_max, JMapViewer.MAX_ZOOM);
+		//int x2 = ms.cLonToX(lon_min, JMapViewer.MAX_ZOOM);
+		Point p1 = ms.cLonLatToXY(lon_max, lat_max, JMapViewer.MAX_ZOOM);
+		Point p2 = ms.cLonLatToXY(lon_min, lat_min, JMapViewer.MAX_ZOOM);
+		int x1 = p1.x;
+		int x2 = p2.x;
 		int diff = Math.abs(x1 - x2);
 		for (int i = 1; i < 10; i++) {
 			System.out.println((JMapViewer.MAX_ZOOM - i) + " : " + diff);

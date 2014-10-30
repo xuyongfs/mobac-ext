@@ -19,6 +19,7 @@ package mobac.gui.mapview.layer;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Stroke;
 import java.io.File;
 
@@ -102,12 +103,18 @@ public class GpxLayer implements MapLayer {
 
 	private boolean paintPoint(final WptType point, Color color, final Graphics2D g, boolean paintPointName,
 			MapSpace mapSpace, int zoom, int minX, int minY, int maxX, int maxY) {
-		int x = mapSpace.cLonToX(point.getLon().doubleValue(), zoom);
-		if (x < minX || x > maxX)
-			return false; // Point outside of visible region
-		int y = mapSpace.cLatToY(point.getLat().doubleValue(), zoom);
-		if (y < minY || y > maxY)
-			return false; // Point outside of visible region
+		//int x = mapSpace.cLonToX(point.getLon().doubleValue(), zoom);
+		//if (x < minX || x > maxX)
+		//	return false; // Point outside of visible region
+		//int y = mapSpace.cLatToY(point.getLat().doubleValue(), zoom);
+		//if (y < minY || y > maxY)
+		//	return false; // Point outside of visible region
+		Point p = mapSpace.cLonLatToXY(point.getLon().doubleValue(), point.getLat().doubleValue(), zoom);
+		int x = p.x;
+		int y = p.y;
+		if (x < minX || x > maxX || y < minY || y > maxY)
+			return false;
+		
 		x -= minX;
 		y -= minY;
 		g.setColor(color);
@@ -124,8 +131,11 @@ public class GpxLayer implements MapLayer {
 	private boolean paintTrack(final WptType point, Color color, final Graphics2D g, MapSpace mapSpace, int zoom,
 			int minX, int minY, int maxX, int maxY) {
 		// Absolute map space coordinates
-		int xAbs = mapSpace.cLonToX(point.getLon().doubleValue(), zoom);
-		int yAbs = mapSpace.cLatToY(point.getLat().doubleValue(), zoom);
+		//int xAbs = mapSpace.cLonToX(point.getLon().doubleValue(), zoom);
+		//int yAbs = mapSpace.cLatToY(point.getLat().doubleValue(), zoom);
+		Point p = mapSpace.cLonLatToXY(point.getLon().doubleValue(), point.getLat().doubleValue(), zoom);
+		int xAbs = p.x;
+		int yAbs = p.y;
 		// Relative coordinates regarding the top left point on map
 		int x = xAbs - minX;
 		int y = yAbs - minY;

@@ -18,6 +18,7 @@ package mobac.tools;
 
 import static mobac.tools.Cities.BERLIN;
 
+import java.awt.Point;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
@@ -149,8 +150,11 @@ public class MapSourceCapabilityDetector {
 			log.debug("Testing " + mapSource.toString());
 
 			MapSpace mapSpace = mapSource.getMapSpace();
-			int tilex = mapSpace.cLonToX(coordinate.lon, zoom) / mapSpace.getTileSize();
-			int tiley = mapSpace.cLatToY(coordinate.lat, zoom) / mapSpace.getTileSize();
+			//int tilex = mapSpace.cLonToX(coordinate.lon, zoom) / mapSpace.getTileSize();
+			//int tiley = mapSpace.cLatToY(coordinate.lat, zoom) / mapSpace.getTileSize();
+			Point p = mapSpace.cLonLatToXY(coordinate.lon, coordinate.lat, zoom);
+			int tilex = p.x / mapSpace.getTileSize();
+			int tiley = p.y / mapSpace.getTileSize();
 
 			c = mapSource.getTileUrlConnection(zoom, tilex, tiley);
 			url = c.getURL();

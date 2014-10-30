@@ -16,6 +16,7 @@
  ******************************************************************************/
 package mobac.program.atlascreators;
 
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -119,10 +120,16 @@ public class MBTiles extends RMapsSQLite {
 	@Override
 	protected void updateTileMetaInfo() throws SQLException {
 		MapSpace ms = map.getMapSource().getMapSpace();
-		double lon1 = ms.cXToLon(map.getMinTileCoordinate().x, zoom);
-		double lon2 = ms.cXToLon(map.getMaxTileCoordinate().x, zoom);
-		double lat1 = ms.cYToLat(map.getMinTileCoordinate().y, zoom);
-		double lat2 = ms.cYToLat(map.getMaxTileCoordinate().y, zoom);
+		//double lon1 = ms.cXToLon(map.getMinTileCoordinate().x, zoom);
+		//double lon2 = ms.cXToLon(map.getMaxTileCoordinate().x, zoom);
+		//double lat1 = ms.cYToLat(map.getMinTileCoordinate().y, zoom);
+		//double lat2 = ms.cYToLat(map.getMaxTileCoordinate().y, zoom);
+		Point2D.Double p1 = ms.cXYToLonLat(map.getMinTileCoordinate().x, map.getMinTileCoordinate().y, zoom);
+		Point2D.Double p2 = ms.cXYToLonLat(map.getMaxTileCoordinate().x, map.getMaxTileCoordinate().y, zoom);
+		double lon1 = p1.x;
+		double lon2 = p2.x;
+		double lat1 = p1.y;
+		double lat2 = p2.y;
 
 		boundsLatMin = Math.min(boundsLatMin, Math.min(lat1, lat2));
 		boundsLatMax = Math.max(boundsLatMax, Math.max(lat1, lat2));

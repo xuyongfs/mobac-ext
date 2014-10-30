@@ -32,6 +32,9 @@ public class ProgramInfo {
 	private static String SVN_REVISION = "unknown";
 	private static String userAgent = "";
 
+	public static String EXT_NAME = "Ext";
+	public static String EXT_VERSION = "";
+
 	/**
 	 * Show or hide the detailed revision info in the main windows title
 	 */
@@ -43,6 +46,7 @@ public class ProgramInfo {
 			Properties props = new Properties();
 			props.load(propIn);
 			VERSION = props.getProperty("mobac.version");
+			EXT_VERSION = props.getProperty("mobac.ext.version");
 			titleHideRevision = Boolean.parseBoolean(props.getProperty("mobac.revision.hide", "false"));
 			System.getProperties().putAll(props);
 		} catch (Exception e) {
@@ -73,7 +77,7 @@ public class ProgramInfo {
 
 	public static String getVersion() {
 		if (VERSION != null)
-			return VERSION;
+			return VERSION + " " + EXT_NAME + " " + EXT_VERSION;
 		else
 			return "UNKNOWN";
 	}
@@ -85,13 +89,11 @@ public class ProgramInfo {
 	public static String getVersionTitle() {
 		String title = PROG_NAME;
 		if (PROG_NAME_SHORT != null)
-			title += " (" + PROG_NAME_SHORT + ") ";
-		else
-			title += " ";
+			title += " (" + PROG_NAME_SHORT + ")";
 		if (VERSION != null) {
-			title += getVersion();
+			title += " " + getVersion();
 		} else
-			title += "unknown version";
+			title += " unknown version";
 		return title;
 	}
 

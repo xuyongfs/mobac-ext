@@ -18,6 +18,7 @@ package mobac.program.atlascreators;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -91,10 +92,16 @@ public class Ozi extends AtlasCreator {
 
 		MapSpace mapSpace = mapSource.getMapSpace();
 
-		double longitudeMin = mapSpace.cXToLon(xMin * tileSize, zoom);
-		double longitudeMax = mapSpace.cXToLon((xMax + 1) * tileSize - 1, zoom);
-		double latitudeMin = mapSpace.cYToLat((yMax + 1) * tileSize - 1, zoom);
-		double latitudeMax = mapSpace.cYToLat(yMin * tileSize, zoom);
+		//double longitudeMin = mapSpace.cXToLon(xMin * tileSize, zoom);
+		//double longitudeMax = mapSpace.cXToLon((xMax + 1) * tileSize - 1, zoom);
+		//double latitudeMin = mapSpace.cYToLat((yMax + 1) * tileSize - 1, zoom);
+		//double latitudeMax = mapSpace.cYToLat(yMin * tileSize, zoom);
+		Point2D.Double p1 = mapSpace.cXYToLonLat(xMin * tileSize, yMin * tileSize, zoom);
+		Point2D.Double p2 = mapSpace.cXYToLonLat((xMax + 1) * tileSize - 1, (yMax + 1) * tileSize - 1, zoom);
+		double longitudeMin = p1.x;
+		double longitudeMax = p2.x;
+		double latitudeMin = p2.y;
+		double latitudeMax = p1.y;
 
 		int width = (xMax - xMin + 1) * tileSize;
 		int height = (yMax - yMin + 1) * tileSize;

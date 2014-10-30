@@ -18,6 +18,7 @@ package mobac.program.atlascreators.impl.rmp;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import mobac.exceptions.MapCreationException;
@@ -58,10 +59,16 @@ public class MultiImage {
 		MapSpace mapSpace = mapSource.getMapSpace();
 		int tilesize = mapSpace.getTileSize();
 
-		int xMax = mapSource.getMapSpace().cLonToX(area.getEast(), zoom) / tilesize;
-		int xMin = mapSource.getMapSpace().cLonToX(area.getWest(), zoom) / tilesize;
-		int yMax = mapSource.getMapSpace().cLatToY(-area.getSouth(), zoom) / tilesize;
-		int yMin = mapSource.getMapSpace().cLatToY(-area.getNorth(), zoom) / tilesize;
+		//int xMax = mapSource.getMapSpace().cLonToX(area.getEast(), zoom) / tilesize;
+		//int xMin = mapSource.getMapSpace().cLonToX(area.getWest(), zoom) / tilesize;
+		//int yMax = mapSource.getMapSpace().cLatToY(-area.getSouth(), zoom) / tilesize;
+		//int yMin = mapSource.getMapSpace().cLatToY(-area.getNorth(), zoom) / tilesize;
+		Point p1 = mapSpace.cLonLatToXY(area.getWest(), -area.getNorth(), zoom);
+		Point p2 = mapSpace.cLonLatToXY(area.getEast(), -area.getSouth(), zoom);
+		int xMax = p2.x / tilesize;
+		int xMin = p1.x / tilesize;
+		int yMax = p2.y / tilesize;
+		int yMin = p1.y / tilesize;
 
 		BufferedImage result = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 

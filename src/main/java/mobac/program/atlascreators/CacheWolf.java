@@ -16,6 +16,7 @@
  ******************************************************************************/
 package mobac.program.atlascreators;
 
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -102,11 +103,17 @@ public class CacheWolf extends Ozi {
 				yStart += tiley * parameters.getHeight();
 			}
 
-			double topLeftLon = mapSpace.cXToLon(xStart, zoom);
-			double topLeftLat = mapSpace.cYToLat(yStart, zoom);
+			//double topLeftLon = mapSpace.cXToLon(xStart, zoom);
+			//double topLeftLat = mapSpace.cYToLat(yStart, zoom);
+			Point2D.Double p = mapSpace.cXYToLonLat(xStart, yStart, zoom);
+			double topLeftLon = p.x;
+			double topLeftLat = p.y;
 
-			double bottomRightLon = mapSpace.cXToLon(xStart + width, zoom);
-			double bottomRightLat = mapSpace.cYToLat(yStart + height, zoom);
+			//double bottomRightLon = mapSpace.cXToLon(xStart + width, zoom);
+			//double bottomRightLat = mapSpace.cYToLat(yStart + height, zoom);
+			p = mapSpace.cXYToLonLat(xStart + width, yStart + height, zoom);
+			double bottomRightLon = p.x;
+			double bottomRightLat = p.y;
 
 			double[] affine = { 0, 0, 0, 0 };
 

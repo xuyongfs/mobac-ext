@@ -43,6 +43,7 @@ import mobac.mapsources.mapspace.MapSpaceFactory;
 import mobac.program.Logging;
 import mobac.program.interfaces.FileBasedMapSource;
 import mobac.program.interfaces.MapSpace;
+import mobac.program.interfaces.MapSpace.MapSpaceType;
 import mobac.program.jaxb.ColorAdapter;
 import mobac.program.model.MapSourceLoaderInfo;
 import mobac.program.model.TileImageType;
@@ -58,7 +59,7 @@ public class CustomLocalTileZipMapSource implements FileBasedMapSource {
 
 	private MapSourceLoaderInfo loaderInfo = null;
 
-	private MapSpace mapSpace = MapSpaceFactory.getInstance(256, true);
+	private MapSpace mapSpace = MapSpaceFactory.getInstance(256, MapSpaceType.msMercatorSpherical);
 
 	private boolean initialized = false;
 

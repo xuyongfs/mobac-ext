@@ -90,6 +90,15 @@ public class CustomMultiLayerMapSource extends AbstractMultiLayerMapSource {
 		this.name = name;
 	}
 
+	@XmlElement(name = "forceMercator", required = false)
+	public boolean getForceMercator() {
+		return forceMercator;
+	}
+
+	public void setForceMercator(boolean forceMercator) {
+		this.forceMercator = forceMercator;
+	}
+
 	@Override
 	public Color getBackgroundColor() {
 		return backgroundColor;

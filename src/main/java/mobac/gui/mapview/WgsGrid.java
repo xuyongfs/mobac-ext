@@ -24,6 +24,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.awt.geom.Point2D;
 
 import javax.swing.JComponent;
 
@@ -139,10 +140,16 @@ public class WgsGrid {
 		final int vLineY2 = y2 - 1;
 
 		// Calculate line indexes
-		final int vMin = Coordinate.doubleToInt(ms.cXToLon(x1, zoom)) / density.iStep;
-		final int vMax = Coordinate.doubleToInt(ms.cXToLon(x2, zoom)) / density.iStep;
-		final int hMin = Coordinate.doubleToInt(ms.cYToLat(y2, zoom)) / density.iStep;
-		final int hMax = Coordinate.doubleToInt(ms.cYToLat(y1, zoom)) / density.iStep;
+		//final int vMin = Coordinate.doubleToInt(ms.cXToLon(x1, zoom)) / density.iStep;
+		//final int vMax = Coordinate.doubleToInt(ms.cXToLon(x2, zoom)) / density.iStep;
+		//final int hMin = Coordinate.doubleToInt(ms.cYToLat(y2, zoom)) / density.iStep;
+		//final int hMax = Coordinate.doubleToInt(ms.cYToLat(y1, zoom)) / density.iStep;
+		Point2D.Double p1 = ms.cXYToLonLat(x1, y1, zoom);
+		Point2D.Double p2 = ms.cXYToLonLat(x2, y2, zoom);
+		final int vMin = Coordinate.doubleToInt(p1.x) / density.iStep;
+		final int vMax = Coordinate.doubleToInt(p2.x) / density.iStep;
+		final int hMin = Coordinate.doubleToInt(p2.y) / density.iStep;
+		final int hMax = Coordinate.doubleToInt(p1.y) / density.iStep;
 
 		g.setBackground(Color.WHITE);
 		g.setColor(s.color);
@@ -151,18 +158,24 @@ public class WgsGrid {
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		// Paint vertical lines
+		double cLat = p2.y;
 		for (int i = vMin; i <= vMax; i++) {
 			int iLon = i * density.iStep;
-			int x = ms.cLonToX(Coordinate.intToDouble(iLon), zoom);
+			//int x = ms.cLonToX(Coordinate.intToDouble(iLon), zoom);
+			Point p = ms.cLonLatToXY(Coordinate.intToDouble(iLon), cLat, zoom);
+			int x = p.x;
 			if (x > x1 && x < x2) {
 				g.drawLine(x, vLineY1, x, vLineY2);
 			}
 		}
 
 		// Paint horizontal lines
+		double cLon = p2.x;
 		for (int i = hMin; i <= hMax; i++) {
 			int iLat = i * density.iStep;
-			int y = ms.cLatToY(Coordinate.intToDouble(iLat), zoom);
+			//int y = ms.cLatToY(Coordinate.intToDouble(iLat), zoom);
+			Point p = ms.cLonLatToXY(cLon, Coordinate.intToDouble(iLat), zoom);
+			int y = p.y;
 			if (y > y1 && y < y2) {
 				g.drawLine(hLineX1, y, hLineX2, y);
 			}
@@ -188,7 +201,9 @@ public class WgsGrid {
 
 			// Calculate coordinates
 			int iLon = i * density.iStep;
-			int x = ms.cLonToX(Coordinate.intToDouble(iLon), zoom);
+			//int x = ms.cLonToX(Coordinate.intToDouble(iLon), zoom);
+			Point p = ms.cLonLatToXY(Coordinate.intToDouble(iLon), cLat, zoom);
+			int x = p.x;
 
 			// Prepare label
 			String label = getLabel(iLon, density);
@@ -212,7 +227,9 @@ public class WgsGrid {
 		// Paint horizontal labels
 		for (int i = hMin; i <= hMax; i++) {
 			int iLat = i * density.iStep;
-			int y = ms.cLatToY(Coordinate.intToDouble(iLat), zoom);
+			//int y = ms.cLatToY(Coordinate.intToDouble(iLat), zoom);
+			Point p = ms.cLonLatToXY(cLon, Coordinate.intToDouble(iLat), zoom);
+			int y = p.y;
 
 			// Prepare label
 			String label = getLabel(iLat, density);

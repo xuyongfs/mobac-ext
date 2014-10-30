@@ -17,6 +17,7 @@
 package mobac.mapsources.mapspace;
 
 import java.awt.Point;
+import java.awt.geom.Point2D;
 
 import mobac.gui.mapview.PreviewMap;
 import mobac.program.interfaces.MapSpace;
@@ -215,6 +216,25 @@ public class MercatorPower2MapSpace implements MapSpace {
 		if (tileSize != other.tileSize)
 			return false;
 		return true;
+	}
+
+	public Point cLonLatToXY(double lon, double lat, int zoom) {
+		Point p = new Point();
+		p.x = cLonToX(lon, zoom);
+		p.y = cLatToY(lat, zoom);
+		return p;
+	}
+
+	public Point2D.Double cXYToLonLat(int x, int y, int zoom) {
+		Point2D.Double p = new Point2D.Double();
+		p.x = cXToLon(x, zoom);
+		p.y = cYToLat(y, zoom);
+		return p;
+	}
+
+	@Override
+	public MapSpaceType getMapSpaceType() {
+		return MapSpaceType.msMercatorSpherical;
 	}
 
 }

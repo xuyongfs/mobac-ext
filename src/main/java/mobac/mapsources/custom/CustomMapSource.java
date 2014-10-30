@@ -33,11 +33,12 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import mobac.exceptions.UnrecoverableDownloadException;
 import mobac.mapsources.MapSourceTools;
-import mobac.mapsources.mapspace.MercatorPower2MapSpace;
+import mobac.mapsources.mapspace.MapSpaceFactory;
 import mobac.program.download.TileDownLoader;
 import mobac.program.interfaces.HttpMapSource;
 import mobac.program.interfaces.MapSourceListener;
 import mobac.program.interfaces.MapSpace;
+import mobac.program.interfaces.MapSpace.MapSpaceType;
 import mobac.program.jaxb.ColorAdapter;
 import mobac.program.model.MapSourceLoaderInfo;
 import mobac.program.model.TileImageType;
@@ -86,6 +87,18 @@ public class CustomMapSource implements HttpMapSource {
 //	@XmlElement(required = false, defaultValue = "false")
 //	protected boolean ignoreContentMismatch = false;
 
+	@XmlElement(defaultValue = "256")
+	private int tileSize = 256;
+	
+	@XmlElement(defaultValue = "msMercatorSpherical")
+	private MapSpaceType mapSpaceType = MapSpaceType.msMercatorSpherical;
+
+	@XmlElement(defaultValue = "")
+	private String httpHeadReferer = "";
+
+	@XmlElement(defaultValue = "")
+	private String httpHeadUserAgent = "";
+
 	private MapSourceLoaderInfo loaderInfo = null;
 
 	/**
@@ -132,7 +145,12 @@ public class CustomMapSource implements HttpMapSource {
 		String url = getTileUrl(zoom, tilex, tiley);
 		if (url == null)
 			return null;
-		return (HttpURLConnection) new URL(url).openConnection();
+		HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+		if (!httpHeadReferer.equals(""))
+			conn.addRequestProperty("Referer", httpHeadReferer);
+		if (!httpHeadUserAgent.equals(""))
+			conn.addRequestProperty("User-Agent", httpHeadUserAgent);
+		return conn;
 	}
 
 	public String getTileUrl(int zoom, int tilex, int tiley) {
@@ -202,7 +220,8 @@ public class CustomMapSource implements HttpMapSource {
 	}
 
 	public MapSpace getMapSpace() {
-		return MercatorPower2MapSpace.INSTANCE_256;
+		//return MercatorPower2MapSpace.INSTANCE_256;
+		return MapSpaceFactory.getInstance(tileSize, mapSpaceType);
 	}
 
 	public Color getBackgroundColor() {
@@ -218,6 +237,22 @@ public class CustomMapSource implements HttpMapSource {
 		if (this.loaderInfo != null)
 			throw new RuntimeException("LoaderInfo already set");
 		this.loaderInfo = loaderInfo;
+	}
+
+	public int getTileSize() {
+		return tileSize;
+	}
+
+	public MapSpaceType getMapSpaceType() {
+		return mapSpaceType;
+	}
+
+	public String getHttpHeadReferer() {
+		return httpHeadReferer;
+	}
+
+	public String getHttpHeadUserAgent() {
+		return httpHeadUserAgent;
 	}
 
 }

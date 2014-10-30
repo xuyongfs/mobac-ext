@@ -16,6 +16,7 @@
  ******************************************************************************/
 package mapsources;
 
+import java.awt.Point;
 import java.net.HttpURLConnection;
 
 import junit.framework.TestCase;
@@ -58,8 +59,11 @@ public class MapSourceTestCase extends TestCase {
 		int zoom = mapSource.getMaxZoom();
 
 		MapSpace mapSpace = mapSource.getMapSpace();
-		int tilex = mapSpace.cLonToX(testCoordinate.lon, zoom) / mapSpace.getTileSize();
-		int tiley = mapSpace.cLatToY(testCoordinate.lat, zoom) / mapSpace.getTileSize();
+		//int tilex = mapSpace.cLonToX(testCoordinate.lon, zoom) / mapSpace.getTileSize();
+		//int tiley = mapSpace.cLatToY(testCoordinate.lat, zoom) / mapSpace.getTileSize();
+		Point p = mapSpace.cLonLatToXY(testCoordinate.lon, testCoordinate.lat, zoom);
+		int tilex = p.x / mapSpace.getTileSize();
+		int tiley = p.y / mapSpace.getTileSize();
 
 		if (mapSource instanceof AbstractHttpMapSource)
 			try {

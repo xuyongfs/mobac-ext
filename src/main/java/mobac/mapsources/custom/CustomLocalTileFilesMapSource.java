@@ -40,6 +40,7 @@ import mobac.mapsources.MapSourceTools;
 import mobac.mapsources.mapspace.MapSpaceFactory;
 import mobac.program.interfaces.FileBasedMapSource;
 import mobac.program.interfaces.MapSpace;
+import mobac.program.interfaces.MapSpace.MapSpaceType;
 import mobac.program.jaxb.ColorAdapter;
 import mobac.program.model.MapSourceLoaderInfo;
 import mobac.program.model.TileImageType;
@@ -55,7 +56,7 @@ public class CustomLocalTileFilesMapSource implements FileBasedMapSource {
 
 	private MapSourceLoaderInfo loaderInfo = null;
 
-	private MapSpace mapSpace = MapSpaceFactory.getInstance(256, true);
+	private MapSpace mapSpace = MapSpaceFactory.getInstance(256, MapSpaceType.msMercatorSpherical);
 
 	private boolean initialized = false;
 
@@ -82,6 +83,9 @@ public class CustomLocalTileFilesMapSource implements FileBasedMapSource {
 	@XmlElement(defaultValue = "#000000")
 	@XmlJavaTypeAdapter(ColorAdapter.class)
 	private Color backgroundColor = Color.BLACK;
+
+	@XmlElement(defaultValue = "")
+	private String emptyTileFile = "";
 
 	public CustomLocalTileFilesMapSource() {
 		super();
@@ -232,6 +236,8 @@ public class CustomLocalTileFilesMapSource implements FileBasedMapSource {
 			throw new RuntimeException("Invalid source type");
 		}
 		File file = new File(sourceFolder, fileName);
+		if (!file.exists() && !emptyTileFile.equals(""))
+			file = new File(emptyTileFile);
 		try {
 			return Utilities.getFileBytes(file);
 		} catch (FileNotFoundException e) {
@@ -275,6 +281,10 @@ public class CustomLocalTileFilesMapSource implements FileBasedMapSource {
 
 	public Color getBackgroundColor() {
 		return backgroundColor;
+	}
+
+	public String getEmptyTileFile() {
+		return emptyTileFile;
 	}
 
 	@XmlTransient

@@ -16,6 +16,7 @@
  ******************************************************************************/
 package mobac.program.atlascreators;
 
+import java.awt.geom.Point2D;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -136,10 +137,16 @@ public class GlopusMapFile extends TrekBuddy {
 			int xCooord = xCoordStart + tilex * tileWidth;
 			int yCooord = yCoordStart + tiley * tileHeight;
 
-			double calWLon = mapSpace.cXToLon(xCooord, zoom);
-			double calNLat = mapSpace.cYToLat(yCooord, zoom);
-			double calELon = mapSpace.cXToLon(xCooord + tileWidth, zoom);
-			double calSLat = mapSpace.cYToLat(yCooord + tileHeight, zoom);
+			//double calWLon = mapSpace.cXToLon(xCooord, zoom);
+			//double calNLat = mapSpace.cYToLat(yCooord, zoom);
+			//double calELon = mapSpace.cXToLon(xCooord + tileWidth, zoom);
+			//double calSLat = mapSpace.cYToLat(yCooord + tileHeight, zoom);
+			Point2D.Double p1 = mapSpace.cXYToLonLat(xCooord, yCooord, zoom);
+			Point2D.Double p2 = mapSpace.cXYToLonLat(xCooord + tileWidth, yCooord + tileWidth, zoom);
+			double calWLon = p1.x;
+			double calNLat = p1.y;
+			double calELon = p2.x;
+			double calSLat = p2.y;
 			GlopusTile gt = new GlopusTile(tileData, calNLat, calWLon, calSLat, calELon);
 			tiles.add(gt);
 		}

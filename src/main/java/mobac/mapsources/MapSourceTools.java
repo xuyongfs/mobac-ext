@@ -16,6 +16,8 @@
  ******************************************************************************/
 package mobac.mapsources;
 
+import java.awt.geom.Point2D;
+
 import mobac.program.interfaces.MapSource;
 import mobac.program.interfaces.MapSpace;
 
@@ -66,10 +68,17 @@ public class MapSourceTools {
 		double[] result = new double[4];
 		tilex *= tileSize;
 		tiley *= tileSize;
-		result[0] = mapSpace.cXToLon(tilex, zoom); // lon_min
-		result[1] = mapSpace.cYToLat(tiley + tileSize, zoom); // lat_max
-		result[2] = mapSpace.cXToLon(tilex + tileSize, zoom); // lon_min
-		result[3] = mapSpace.cYToLat(tiley, zoom); // lat_max
+		//result[0] = mapSpace.cXToLon(tilex, zoom); // lon_min
+		//result[1] = mapSpace.cYToLat(tiley + tileSize, zoom); // lat_max
+		//result[2] = mapSpace.cXToLon(tilex + tileSize, zoom); // lon_min
+		//result[3] = mapSpace.cYToLat(tiley, zoom); // lat_max
+		Point2D.Double p1 = mapSpace.cXYToLonLat(tilex, tiley, zoom);
+		Point2D.Double p2 = mapSpace.cXYToLonLat(tilex + tileSize, tiley + tileSize, zoom);
+		result[0] = p1.x; // lon_min
+		result[1] = p2.y; // lat_max
+		result[2] = p2.x; // lon_min
+		result[3] = p1.y; // lat_max
+
 		return result;
 	}
 

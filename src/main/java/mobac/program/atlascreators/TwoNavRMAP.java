@@ -25,6 +25,7 @@ package mobac.program.atlascreators;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -312,18 +313,32 @@ public class TwoNavRMAP extends AtlasCreator {
 		for (LayerInterface layer : atlas) {
 			MapInterface map0 = layer.getMap(0);
 			MapSpace mapSpace0 = map0.getMapSource().getMapSpace();
-			double longitudeMin = mapSpace0.cXToLon(map0.getMinTileCoordinate().x, map0.getZoom());
-			double longitudeMax = mapSpace0.cXToLon(map0.getMaxTileCoordinate().x + 1, map0.getZoom());
-			double latitudeMin = mapSpace0.cYToLat(map0.getMaxTileCoordinate().y + 1, map0.getZoom());
-			double latitudeMax = mapSpace0.cYToLat(map0.getMinTileCoordinate().y, map0.getZoom());
+			//double longitudeMin = mapSpace0.cXToLon(map0.getMinTileCoordinate().x, map0.getZoom());
+			//double longitudeMax = mapSpace0.cXToLon(map0.getMaxTileCoordinate().x + 1, map0.getZoom());
+			//double latitudeMin = mapSpace0.cYToLat(map0.getMaxTileCoordinate().y + 1, map0.getZoom());
+			//double latitudeMax = mapSpace0.cYToLat(map0.getMinTileCoordinate().y, map0.getZoom());
+			Point2D.Double p1 = mapSpace0.cXYToLonLat(map0.getMinTileCoordinate().x, map0.getMinTileCoordinate().y, map0.getZoom());
+			Point2D.Double p2 = mapSpace0.cXYToLonLat(map0.getMaxTileCoordinate().x + 1, map0.getMaxTileCoordinate().y + 1, map0.getZoom());
+			double longitudeMin = p1.x;
+			double longitudeMax = p2.x;
+			double latitudeMin = p2.y;
+			double latitudeMax = p1.y;
+
 			for (int n = 1; n < layer.getMapCount(); n++) {
 				MapInterface mapN = layer.getMap(n);
 				MapSpace mapSpaceN = mapN.getMapSource().getMapSpace();
 
-				double longitudeMinN = mapSpaceN.cXToLon(mapN.getMinTileCoordinate().x, mapN.getZoom());
-				double longitudeMaxN = mapSpaceN.cXToLon(mapN.getMaxTileCoordinate().x + 1, mapN.getZoom());
-				double latitudeMinN = mapSpaceN.cYToLat(mapN.getMaxTileCoordinate().y + 1, mapN.getZoom());
-				double latitudeMaxN = mapSpaceN.cYToLat(mapN.getMinTileCoordinate().y, mapN.getZoom());
+				//double longitudeMinN = mapSpaceN.cXToLon(mapN.getMinTileCoordinate().x, mapN.getZoom());
+				//double longitudeMaxN = mapSpaceN.cXToLon(mapN.getMaxTileCoordinate().x + 1, mapN.getZoom());
+				//double latitudeMinN = mapSpaceN.cYToLat(mapN.getMaxTileCoordinate().y + 1, mapN.getZoom());
+				//double latitudeMaxN = mapSpaceN.cYToLat(mapN.getMinTileCoordinate().y, mapN.getZoom());
+				p1 = mapSpaceN.cXYToLonLat(mapN.getMinTileCoordinate().x, mapN.getMinTileCoordinate().y, mapN.getZoom());
+				p2 = mapSpaceN.cXYToLonLat(mapN.getMaxTileCoordinate().x + 1, mapN.getMaxTileCoordinate().y + 1, mapN.getZoom());
+				double longitudeMinN = p1.x;
+				double longitudeMaxN = p2.x;
+				double latitudeMinN = p2.y;
+				double latitudeMaxN = p1.y;
+
 				if ((longitudeMin != longitudeMinN) || (longitudeMax != longitudeMaxN) || (latitudeMin != latitudeMinN)
 						|| (latitudeMax != latitudeMaxN)) {
 					throw new AtlasTestException("All maps in one layer have to cover the same area!\n"
@@ -379,14 +394,21 @@ public class TwoNavRMAP extends AtlasCreator {
 		log.trace("rmap tileHeight = " + rmapFile.tileHeight);
 
 		MapSpace mapSpace = layer.getMap(DefaultMap).getMapSource().getMapSpace();
-		rmapFile.longitudeMin = mapSpace.cXToLon(layer.getMap(DefaultMap).getMinTileCoordinate().x,
-				layer.getMap(DefaultMap).getZoom());
-		rmapFile.longitudeMax = mapSpace.cXToLon(layer.getMap(DefaultMap).getMaxTileCoordinate().x,
-				layer.getMap(DefaultMap).getZoom());
-		rmapFile.latitudeMin = mapSpace.cYToLat(layer.getMap(DefaultMap).getMaxTileCoordinate().y,
-				layer.getMap(DefaultMap).getZoom());
-		rmapFile.latitudeMax = mapSpace.cYToLat(layer.getMap(DefaultMap).getMinTileCoordinate().y,
-				layer.getMap(DefaultMap).getZoom());
+		//rmapFile.longitudeMin = mapSpace.cXToLon(layer.getMap(DefaultMap).getMinTileCoordinate().x,
+		//		layer.getMap(DefaultMap).getZoom());
+		//rmapFile.longitudeMax = mapSpace.cXToLon(layer.getMap(DefaultMap).getMaxTileCoordinate().x,
+		//		layer.getMap(DefaultMap).getZoom());
+		//rmapFile.latitudeMin = mapSpace.cYToLat(layer.getMap(DefaultMap).getMaxTileCoordinate().y,
+		//		layer.getMap(DefaultMap).getZoom());
+		//rmapFile.latitudeMax = mapSpace.cYToLat(layer.getMap(DefaultMap).getMinTileCoordinate().y,
+		//		layer.getMap(DefaultMap).getZoom());
+		MapInterface map = layer.getMap(DefaultMap);
+		Point2D.Double p1 = mapSpace.cXYToLonLat(map.getMinTileCoordinate().x, map.getMinTileCoordinate().y, map.getZoom());
+		Point2D.Double p2 = mapSpace.cXYToLonLat(map.getMaxTileCoordinate().x, map.getMaxTileCoordinate().y, map.getZoom());
+		rmapFile.longitudeMin = p1.x;
+		rmapFile.longitudeMax = p2.x;
+		rmapFile.latitudeMin = p2.y;
+		rmapFile.latitudeMax = p1.y;
 
 		log.trace("rmap longitudeMin = " + rmapFile.longitudeMin);
 		log.trace("rmap longitudeMax = " + rmapFile.longitudeMax);

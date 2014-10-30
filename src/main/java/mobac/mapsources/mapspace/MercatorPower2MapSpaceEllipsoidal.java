@@ -169,4 +169,9 @@ public class MercatorPower2MapSpaceEllipsoidal extends MercatorPower2MapSpace {
 		return true;
 	}
 
+	@Override
+	public MapSpaceType getMapSpaceType() {
+		return MapSpaceType.msMercatorEllipsoidal;
+	}
+
 }

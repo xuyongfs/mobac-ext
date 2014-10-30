@@ -18,6 +18,7 @@ package mobac.mapsources.custom;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -36,6 +37,7 @@ import mobac.gui.mapview.PreviewMap;
 import mobac.mapsources.mapspace.MapSpaceFactory;
 import mobac.program.interfaces.FileBasedMapSource;
 import mobac.program.interfaces.MapSpace;
+import mobac.program.interfaces.MapSpace.MapSpaceType;
 import mobac.program.jaxb.ColorAdapter;
 import mobac.program.model.MapSourceLoaderInfo;
 import mobac.program.model.TileImageType;
@@ -62,7 +64,7 @@ public class CustomLocalImageFileMapSource implements FileBasedMapSource {
 	@XmlElement(required = true, nillable = false)
 	private double boxWest = -180.0;
 
-	private MapSpace mapSpace = MapSpaceFactory.getInstance(256, true);
+	private MapSpace mapSpace = MapSpaceFactory.getInstance(256, MapSpaceType.msMercatorSpherical);
 
 	private boolean initialized = false;
 
@@ -171,10 +173,17 @@ public class CustomLocalImageFileMapSource implements FileBasedMapSource {
 			int imageWidth = fullImage.getWidth();
 			int imageHeight = fullImage.getHeight();
 			int tileSize = mapSpace.getTileSize();
-			double tileWest = mapSpace.cXToLon(x * tileSize, zoom);
-			double tileNorth = mapSpace.cYToLat(y * tileSize, zoom);
-			double tileEast = mapSpace.cXToLon((x + 1) * tileSize, zoom);
-			double tileSouth = mapSpace.cYToLat((y + 1) * tileSize, zoom);
+			//double tileWest = mapSpace.cXToLon(x * tileSize, zoom);
+			//double tileNorth = mapSpace.cYToLat(y * tileSize, zoom);
+			//double tileEast = mapSpace.cXToLon((x + 1) * tileSize, zoom);
+			//double tileSouth = mapSpace.cYToLat((y + 1) * tileSize, zoom);
+			Point2D.Double p1 = mapSpace.cXYToLonLat(x * tileSize, y * tileSize, zoom);
+			Point2D.Double p2 = mapSpace.cXYToLonLat((x + 1) * tileSize, (y + 1) * tileSize, zoom);
+			double tileWest = p1.x;
+			double tileNorth = p1.y;
+			double tileEast = p2.x;
+			double tileSouth = p2.y;
+
 			double tileWidth = tileEast - tileWest;
 			double tileHeight = tileNorth - tileSouth;
 

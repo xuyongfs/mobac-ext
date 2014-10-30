@@ -179,19 +179,23 @@ public class Map implements MapInterface, ToolTipProvider, CapabilityDeletable, 
 	}
 
 	public double getMinLat() {
-		return mapSource.getMapSpace().cYToLat(maxTileCoordinate.y, zoom);
+		//return mapSource.getMapSpace().cYToLat(maxTileCoordinate.y, zoom);
+		return mapSource.getMapSpace().cXYToLonLat(maxTileCoordinate.x, maxTileCoordinate.y, zoom).y;
 	}
 
 	public double getMaxLat() {
-		return mapSource.getMapSpace().cYToLat(minTileCoordinate.y, zoom);
+		//return mapSource.getMapSpace().cYToLat(minTileCoordinate.y, zoom);
+		return mapSource.getMapSpace().cXYToLonLat(minTileCoordinate.x, minTileCoordinate.y, zoom).y;
 	}
 
 	public double getMinLon() {
-		return mapSource.getMapSpace().cXToLon(minTileCoordinate.x, zoom);
+		//return mapSource.getMapSpace().cXToLon(minTileCoordinate.x, zoom);
+		return mapSource.getMapSpace().cXYToLonLat(minTileCoordinate.x, minTileCoordinate.y, zoom).x;
 	}
 
 	public double getMaxLon() {
-		return mapSource.getMapSpace().cXToLon(maxTileCoordinate.x, zoom);
+		//return mapSource.getMapSpace().cXToLon(maxTileCoordinate.x, zoom);
+		return mapSource.getMapSpace().cXYToLonLat(maxTileCoordinate.x, maxTileCoordinate.y, zoom).x;
 	}
 
 	public void delete() {

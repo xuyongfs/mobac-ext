@@ -18,6 +18,7 @@ package mobac.program.atlascreators.impl.rmp;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.IOException;
@@ -47,10 +48,16 @@ public class MobacTile {
 		int tileSize = mapSpace.getTileSize();
 		int x = tilex * tileSize;
 		int y = tiley * tileSize;
-		double north = mapSpace.cYToLat(y, zoom);
-		double south = mapSpace.cYToLat(y + tileSize - 1, zoom);
-		double west = mapSpace.cXToLon(x, zoom);
-		double east = mapSpace.cXToLon(x + tileSize - 1, zoom);
+		//double north = mapSpace.cYToLat(y, zoom);
+		//double south = mapSpace.cYToLat(y + tileSize - 1, zoom);
+		//double west = mapSpace.cXToLon(x, zoom);
+		//double east = mapSpace.cXToLon(x + tileSize - 1, zoom);
+		Point2D.Double p1 = mapSpace.cXYToLonLat(x, y, zoom);
+		Point2D.Double p2 = mapSpace.cXYToLonLat(x + tileSize - 1, y + tileSize - 1, zoom);
+		double north = p1.y;
+		double south = p2.y;
+		double west = p1.x;
+		double east = p2.x;
 
 		// north and south have to be negated - this really strange!
 		boundingRect = new BoundingRect(-north, -south, west, east);

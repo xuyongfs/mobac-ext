@@ -17,6 +17,7 @@
 package mobac.program.atlascreators;
 
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
 
@@ -167,10 +168,16 @@ public class MagellanRmp extends AtlasCreator {
 
 		MapSpace mapSpace = mapSource.getMapSpace();
 
-		double north = mapSpace.cYToLat(map.getMinTileCoordinate().y, zoom);
-		double south = mapSpace.cYToLat(map.getMaxTileCoordinate().y, zoom);
-		double west = mapSpace.cXToLon(map.getMinTileCoordinate().x, zoom);
-		double east = mapSpace.cXToLon(map.getMaxTileCoordinate().x, zoom);
+		//double north = mapSpace.cYToLat(map.getMinTileCoordinate().y, zoom);
+		//double south = mapSpace.cYToLat(map.getMaxTileCoordinate().y, zoom);
+		//double west = mapSpace.cXToLon(map.getMinTileCoordinate().x, zoom);
+		//double east = mapSpace.cXToLon(map.getMaxTileCoordinate().x, zoom);
+		Point2D.Double p1 = mapSpace.cXYToLonLat(map.getMinTileCoordinate().x, map.getMinTileCoordinate().y, zoom);
+		Point2D.Double p2 = mapSpace.cXYToLonLat(map.getMaxTileCoordinate().x, map.getMaxTileCoordinate().y, zoom);
+		double north = p1.y;
+		double south = p2.y;
+		double west = p1.x;
+		double east = p2.x;
 
 		BoundingRect rect = new BoundingRect(-north, -south, west, east);
 

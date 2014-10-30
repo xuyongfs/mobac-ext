@@ -16,6 +16,7 @@
  ******************************************************************************/
 package mobac.gui.actions;
 
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -134,8 +135,11 @@ public class AddGpxTrackAreaPolygonMap implements ActionListener {
 		int[] yPoints = new int[trackPoints.length];
 		for (int i = 0; i < trackPoints.length; i++) {
 			EastNorthCoordinate coord = trackPoints[i];
-			xPoints[i] = mapSpace.cLonToX(coord.lon, maxZoom);
-			yPoints[i] = mapSpace.cLatToY(coord.lat, maxZoom);
+			//xPoints[i] = mapSpace.cLonToX(coord.lon, maxZoom);
+			//yPoints[i] = mapSpace.cLatToY(coord.lat, maxZoom);
+			Point p = mapSpace.cLonLatToXY(coord.lon, coord.lat, maxZoom);
+			xPoints[i] = p.x;
+			yPoints[i] = p.y;
 		}
 
 		Polygon p = new Polygon(xPoints, yPoints, xPoints.length);

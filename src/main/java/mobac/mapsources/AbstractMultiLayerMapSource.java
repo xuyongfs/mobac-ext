@@ -19,6 +19,9 @@ package mobac.mapsources;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -31,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import mobac.exceptions.TileException;
 import mobac.gui.mapview.PreviewMap;
+import mobac.mapsources.mapspace.MercatorPower2MapSpace;
 import mobac.program.interfaces.InitializableMapSource;
 import mobac.program.interfaces.MapSource;
 import mobac.program.interfaces.MapSpace;
@@ -52,6 +56,8 @@ public abstract class AbstractMultiLayerMapSource implements InitializableMapSou
 	private MapSpace mapSpace;
 	protected MapSourceLoaderInfo loaderInfo = null;
 
+	protected boolean forceMercator = false;
+
 	public AbstractMultiLayerMapSource(String name, TileImageType tileImageType) {
 		this();
 		this.name = name;
@@ -64,21 +70,21 @@ public abstract class AbstractMultiLayerMapSource implements InitializableMapSou
 
 	protected void initializeValues() {
 		MapSource refMapSource = mapSources[0];
-		mapSpace = refMapSource.getMapSpace();
+		mapSpace = forceMercator ? MercatorPower2MapSpace.INSTANCE_256 : refMapSource.getMapSpace();
 		maxZoom = PreviewMap.MAX_ZOOM;
 		minZoom = 0;
 		for (MapSource ms : mapSources) {
 			maxZoom = Math.min(maxZoom, ms.getMaxZoom());
 			minZoom = Math.max(minZoom, ms.getMinZoom());
-			if (!ms.getMapSpace().equals(mapSpace))
-				throw new RuntimeException("Different map spaces used in multi-layer map source");
+			//if (!forceMercator && !ms.getMapSpace().equals(mapSpace))
+			//	throw new RuntimeException("Different map spaces used in multi-layer map source");
 		}
 	}
 
 	@Override
 	public void initialize() {
 		MapSource refMapSource = mapSources[0];
-		mapSpace = refMapSource.getMapSpace();
+		mapSpace = forceMercator ? MercatorPower2MapSpace.INSTANCE_256 : refMapSource.getMapSpace();
 		maxZoom = PreviewMap.MAX_ZOOM;
 		minZoom = 0;
 		for (MapSource ms : mapSources) {
@@ -127,6 +133,55 @@ public abstract class AbstractMultiLayerMapSource implements InitializableMapSou
 		return buf.toByteArray();
 	}
 
+	public BufferedImage getTileImage(MapSource layerMapSource, int zoom, int x, int y, LoadMethod loadMethod) throws IOException, TileException, InterruptedException {
+		BufferedImage image = null;
+		if (layerMapSource.getMapSpace().getMapSpaceType() == mapSpace.getMapSpaceType())
+			image = layerMapSource.getTileImage(zoom, x, y, loadMethod);
+		else {
+			int tileSize = mapSpace.getTileSize();
+			int pixelx1 = x * tileSize;
+			int pixely1 = y * tileSize;
+			Point2D.Double pd1 = mapSpace.cXYToLonLat(pixelx1, pixely1, zoom);
+			Point2D.Double pd2 = mapSpace.cXYToLonLat(pixelx1 + tileSize - 1, pixely1 + tileSize - 1, zoom);
+
+			Point p1 = layerMapSource.getMapSpace().cLonLatToXY(pd1.x, pd1.y, zoom);
+			Point p2 = layerMapSource.getMapSpace().cLonLatToXY(pd2.x, pd2.y, zoom);
+			int tileSizeSrc = layerMapSource.getMapSpace().getTileSize();
+			int tilex1 = p1.x / tileSizeSrc;
+			int tiley1 = p1.y / tileSizeSrc;
+			int tilex2 = p2.x / tileSizeSrc;
+			int tiley2 = p2.y / tileSizeSrc;
+
+			BufferedImage imgSrc = new BufferedImage(p2.x - p1.x + 1, p2.y - p1.y + 1, BufferedImage.TYPE_4BYTE_ABGR);
+			Graphics2D g2 = imgSrc.createGraphics();
+			try {
+				int dx = (p1.x - pixelx1) % tileSizeSrc;
+				int dy = (p1.y - pixely1) % tileSizeSrc;
+				int drawx = (dx >= 0) ? - dx : - (tileSizeSrc + dx) ;
+				for (int i = tilex1; i <= tilex2; i++) {
+					int drawy = (dy >= 0) ? - dy : - (tileSizeSrc + dy);
+					for (int j = tiley1; j <= tiley2; j++) {
+						BufferedImage img = layerMapSource.getTileImage(zoom, i, j, loadMethod);
+						g2.drawImage(img, drawx, drawy, null);
+						drawy += tileSizeSrc;
+					}
+					drawx += tileSizeSrc;
+				}
+			} finally {
+				g2.dispose();
+			}
+			image = new BufferedImage(tileSize, tileSize, BufferedImage.TYPE_4BYTE_ABGR);
+			g2 = image.createGraphics();
+			try {
+				g2.drawImage(imgSrc, 0, 0, tileSize, tileSize, null);
+			} finally {
+				g2.dispose();
+			}
+
+		}
+		return image;
+	}
+
 	public BufferedImage getTileImage(int zoom, int x, int y, LoadMethod loadMethod) throws IOException,
 			InterruptedException, TileException {
 		BufferedImage image = null;
@@ -136,7 +191,8 @@ public abstract class AbstractMultiLayerMapSource implements InitializableMapSou
 			int maxSize = mapSpace.getTileSize();
 			for (int i = 0; i < mapSources.length; i++) {
 				MapSource layerMapSource = mapSources[i];
-				BufferedImage layerImage = layerMapSource.getTileImage(zoom, x, y, loadMethod);
+				//BufferedImage layerImage = layerMapSource.getTileImage(zoom, x, y, loadMethod);
+				BufferedImage layerImage = getTileImage(layerMapSource, zoom, x, y, loadMethod);
 				if (layerImage != null) {
 					log.debug("Multi layer loading: " + layerMapSource + " " + x + " " + y + " " + zoom);
 					layerImages.add(layerImage);

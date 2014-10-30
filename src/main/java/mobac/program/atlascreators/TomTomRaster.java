@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -215,10 +216,16 @@ public class TomTomRaster extends AtlasCreator {
 		MapSpace mapSpace = mapSource.getMapSpace();
 		NumberFormat df = Utilities.FORMAT_6_DEC_ENG;
 
-		String longitudeMin = df.format(mapSpace.cXToLon(startX, zoom));
-		String longitudeMax = df.format(mapSpace.cXToLon(startX + width, zoom));
-		String latitudeMin = df.format(mapSpace.cYToLat(startY + height, zoom));
-		String latitudeMax = df.format(mapSpace.cYToLat(startY, zoom));
+		//String longitudeMin = df.format(mapSpace.cXToLon(startX, zoom));
+		//String longitudeMax = df.format(mapSpace.cXToLon(startX + width, zoom));
+		//String latitudeMin = df.format(mapSpace.cYToLat(startY + height, zoom));
+		//String latitudeMax = df.format(mapSpace.cYToLat(startY, zoom));
+		Point2D.Double p1 = mapSpace.cXYToLonLat(startX, startY, zoom);
+		Point2D.Double p2 = mapSpace.cXYToLonLat(startX + width, startY + height, zoom);
+		String longitudeMin = df.format(p1.x);
+		String longitudeMax = df.format(p2.x);
+		String latitudeMin = df.format(p2.y);
+		String latitudeMax = df.format(p1.y);
 
 		StringWriter sw = new StringWriter();
 		sw.write(imageFileName + "\r\n");

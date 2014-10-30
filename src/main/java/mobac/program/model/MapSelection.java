@@ -46,10 +46,16 @@ public class MapSelection {
 		this.mapSpace = mapSource.getMapSpace();
 		mapSourceTileSize = this.mapSpace.getTileSize();
 		zoom = JMapViewer.MAX_ZOOM;
-		int x1 = mapSpace.cLonToX(min.lon, zoom);
-		int x2 = mapSpace.cLonToX(max.lon, zoom);
-		int y1 = mapSpace.cLatToY(min.lat, zoom);
-		int y2 = mapSpace.cLatToY(max.lat, zoom);
+		//int x1 = mapSpace.cLonToX(min.lon, zoom);
+		//int x2 = mapSpace.cLonToX(max.lon, zoom);
+		//int y1 = mapSpace.cLatToY(min.lat, zoom);
+		//int y2 = mapSpace.cLatToY(max.lat, zoom);
+		Point p1 = mapSpace.cLonLatToXY(min.lon, min.lat, zoom);
+		Point p2 = mapSpace.cLonLatToXY(max.lon, max.lat, zoom);
+		int x1 = p1.x;
+		int x2 = p2.x;
+		int y1 = p1.y;
+		int y2 = p2.y;
 		setCoordinates(x1, x2, y1, y2);
 	}
 

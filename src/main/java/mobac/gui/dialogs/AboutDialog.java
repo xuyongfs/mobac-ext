@@ -65,6 +65,8 @@ public class AboutDialog extends JDialog implements MouseListener {
 		infoPanel.add(new JLabel(ProgramInfo.getVersion()), eol);
 		infoPanel.add(new JLabel(I18nUtils.localizedStringForKey("dlg_about_program_version")), std);
 		infoPanel.add(new JLabel(ProgramInfo.getRevisionStr()), eol);
+		infoPanel.add(new JLabel("¿ªÔ´ÍøÖ·:"), std);
+		infoPanel.add(new JLabel("https://github.com/rilyu/mobac-ext"), eol);
 
 		panel.add(infoPanel);
 		panel.add(splashLabel);

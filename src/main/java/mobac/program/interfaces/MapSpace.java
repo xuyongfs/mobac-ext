@@ -17,6 +17,7 @@
 package mobac.program.interfaces;
 
 import java.awt.Point;
+import java.awt.geom.Point2D;
 
 import mobac.mapsources.mapspace.MercatorPower2MapSpace;
 
@@ -34,6 +35,10 @@ public interface MapSpace {
 
 	public enum ProjectionCategory {
 		SPHERE, ELLIPSOID, GEOID
+	};
+
+	public enum MapSpaceType {
+		msMercatorSpherical, msMercatorEllipsoidal, msMercatorGCJ02
 	};
 
 	public ProjectionCategory getProjectionCategory();
@@ -82,6 +87,26 @@ public interface MapSpace {
 	public double cYToLat(int y, int zoom);
 
 	/**
+	 * Converts the pixel coordinate from map space to longitude and latitude.
+	 * 2014-10-27 by Randolph
+	 * 
+	 * @param lon
+	 * @param lat
+	 * @param zoom
+	 * @return
+	 */
+	public Point cLonLatToXY(double lon, double lat, int zoom);
+
+	/**
+	 * Converts longitude and latitude to the pixel coordinate from map space.
+	 * @param x
+	 * @param y
+	 * @param zoom
+	 * @return
+	 */
+	public Point2D.Double cXYToLonLat(int x, int y, int zoom);
+
+	/**
 	 * "Walks" westerly a certain distance on a latitude and returns the
 	 * "mileage" in map space pixels. The distance is specified as angular
 	 * distance, therefore this method works with all length unit systems (e.g.
@@ -118,5 +143,7 @@ public interface MapSpace {
 	public int xChangeZoom(int x, int oldZoom, int newZoom);
 
 	public int yChangeZoom(int y, int oldZoom, int newZoom);
+	
+	public MapSpaceType getMapSpaceType();
 
 }

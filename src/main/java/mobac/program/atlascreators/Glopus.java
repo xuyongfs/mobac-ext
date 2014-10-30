@@ -16,6 +16,7 @@
  ******************************************************************************/
 package mobac.program.atlascreators;
 
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -58,10 +59,16 @@ public class Glopus extends Ozi {
 
 			MapSpace mapSpace = mapSource.getMapSpace();
 
-			String longitudeMin = Double.toString(mapSpace.cXToLon(xMin * tileSize, zoom));
-			String longitudeMax = Double.toString(mapSpace.cXToLon((xMax + 1) * tileSize, zoom));
-			String latitudeMin = Double.toString(mapSpace.cYToLat((yMax + 1) * tileSize, zoom));
-			String latitudeMax = Double.toString(mapSpace.cYToLat(yMin * tileSize, zoom));
+			//String longitudeMin = Double.toString(mapSpace.cXToLon(xMin * tileSize, zoom));
+			//String longitudeMax = Double.toString(mapSpace.cXToLon((xMax + 1) * tileSize, zoom));
+			//String latitudeMin = Double.toString(mapSpace.cYToLat((yMax + 1) * tileSize, zoom));
+			//String latitudeMax = Double.toString(mapSpace.cYToLat(yMin * tileSize, zoom));
+			Point2D.Double p1 = mapSpace.cXYToLonLat(xMin * tileSize, yMin * tileSize, zoom);
+			Point2D.Double p2 = mapSpace.cXYToLonLat((xMax + 1) * tileSize, (yMax + 1) * tileSize, zoom);
+			String longitudeMin = Double.toString(p1.x);
+			String longitudeMax = Double.toString(p2.x);
+			String latitudeMin = Double.toString(p2.y);
+			String latitudeMax = Double.toString(p1.y);
 
 			int width = (xMax - xMin + 1) * tileSize;
 			int height = (yMax - yMin + 1) * tileSize;

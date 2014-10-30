@@ -60,10 +60,16 @@ public class MapPolygon extends Map {
 			EastNorthCoordinate point1 = trackPoints[i - 1];
 			EastNorthCoordinate point2 = trackPoints[i];
 
-			int y1 = mapSpace.cLatToY(point1.lat, zoom);
-			int y2 = mapSpace.cLatToY(point2.lat, zoom);
-			int x1 = mapSpace.cLonToX(point1.lon, zoom);
-			int x2 = mapSpace.cLonToX(point2.lon, zoom);
+			//int y1 = mapSpace.cLatToY(point1.lat, zoom);
+			//int y2 = mapSpace.cLatToY(point2.lat, zoom);
+			//int x1 = mapSpace.cLonToX(point1.lon, zoom);
+			//int x2 = mapSpace.cLonToX(point2.lon, zoom);
+			Point p1 = mapSpace.cLonLatToXY(point1.lon, point1.lat, zoom);
+			Point p2 = mapSpace.cLonLatToXY(point2.lon, point2.lat, zoom);
+			int y1 = p1.y;
+			int y2 = p2.y;
+			int x1 = p1.x;
+			int x2 = p2.x;
 
 			Line2D.Double ln = new Line2D.Double(x1, y1, x2, y2);
 			double indent = pixelDistance; // distance from central line

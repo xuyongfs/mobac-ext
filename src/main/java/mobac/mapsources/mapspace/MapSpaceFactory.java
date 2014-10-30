@@ -17,6 +17,7 @@
 package mobac.mapsources.mapspace;
 
 import mobac.program.interfaces.MapSpace;
+import mobac.program.interfaces.MapSpace.MapSpaceType;
 
 public class MapSpaceFactory {
 
@@ -25,11 +26,13 @@ public class MapSpaceFactory {
 	 * @param isSpherical
 	 * @return
 	 */
-	public static MapSpace getInstance(int tileSize, boolean isSpherical) {
-		if (isSpherical)
-			return new MercatorPower2MapSpace(tileSize);
-		else
-			return new MercatorPower2MapSpaceEllipsoidal(tileSize);
+	public static MapSpace getInstance(int tileSize, MapSpaceType msType) {
+		switch (msType) {
+		case msMercatorSpherical: return new MercatorPower2MapSpace(tileSize);
+		case msMercatorEllipsoidal: return new MercatorPower2MapSpaceEllipsoidal(tileSize);
+		case msMercatorGCJ02: return new MercatorPower2MapSpaceGCJ02(tileSize);
+		default: return null;
+		}
 	}
 
 }

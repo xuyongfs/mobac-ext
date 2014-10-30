@@ -16,6 +16,9 @@
  ******************************************************************************/
 package mobac.program.model;
 
+import java.awt.Point;
+import java.awt.geom.Point2D;
+
 import mobac.gui.mapview.JMapViewer;
 import mobac.program.interfaces.MapSpace;
 
@@ -43,8 +46,11 @@ public class MercatorPixelCoordinate {
 	public MercatorPixelCoordinate(MapSpace mapSpace, double lat, double lon) {
 		super();
 		this.mapSpace = mapSpace;
-		this.x = mapSpace.cLonToX(lon, JMapViewer.MAX_ZOOM);
-		this.y = mapSpace.cLatToY(lat, JMapViewer.MAX_ZOOM);
+		//this.x = mapSpace.cLonToX(lon, JMapViewer.MAX_ZOOM);
+		//this.y = mapSpace.cLatToY(lat, JMapViewer.MAX_ZOOM);
+		Point p = mapSpace.cLonLatToXY(lon, lat, JMapViewer.MAX_ZOOM);
+		this.x = p.x;
+		this.y = p.y;
 		this.zoom = JMapViewer.MAX_ZOOM;
 	}
 
@@ -65,8 +71,11 @@ public class MercatorPixelCoordinate {
 	}
 
 	public EastNorthCoordinate getEastNorthCoordinate() {
-		double lon = mapSpace.cXToLon(x, zoom);
-		double lat = mapSpace.cYToLat(y, zoom);
+		//double lon = mapSpace.cXToLon(x, zoom);
+		//double lat = mapSpace.cYToLat(y, zoom);
+		Point2D.Double p = mapSpace.cXYToLonLat(x, y, zoom);
+		double lon = p.x;
+		double lat = p.y;
 		return new EastNorthCoordinate(lat, lon);
 	}
 

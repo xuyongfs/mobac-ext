@@ -21,6 +21,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
@@ -297,8 +298,11 @@ public class PreviewMap extends JMapViewer {
 	 */
 	public EastNorthCoordinate getCenterCoordinate() {
 		MapSpace mapSpace = mapSource.getMapSpace();
-		double lon = mapSpace.cXToLon(center.x, zoom);
-		double lat = mapSpace.cYToLat(center.y, zoom);
+		//double lon = mapSpace.cXToLon(center.x, zoom);
+		//double lat = mapSpace.cYToLat(center.y, zoom);
+		Point2D.Double p = mapSpace.cXYToLonLat(center.x, center.y, zoom);
+		double lon = p.x;
+		double lat = p.y;
 		return new EastNorthCoordinate(lat, lon);
 	}
 

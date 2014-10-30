@@ -18,6 +18,7 @@ package mobac.program.atlascreators;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -245,10 +246,17 @@ public class OruxMaps extends AtlasCreator {
 
 		StringBuilder mapWriter = new StringBuilder();
 		MapSpace mapSpace = mapSource.getMapSpace();
-		double longitudeMin = mapSpace.cXToLon(xMin * tileSize, zoom);
-		double longitudeMax = mapSpace.cXToLon((xMax + 1) * tileSize, zoom);
-		double latitudeMin = mapSpace.cYToLat((yMax + 1) * tileSize, zoom);
-		double latitudeMax = mapSpace.cYToLat(yMin * tileSize, zoom);
+		//double longitudeMin = mapSpace.cXToLon(xMin * tileSize, zoom);
+		//double longitudeMax = mapSpace.cXToLon((xMax + 1) * tileSize, zoom);
+		//double latitudeMin = mapSpace.cYToLat((yMax + 1) * tileSize, zoom);
+		//double latitudeMax = mapSpace.cYToLat(yMin * tileSize, zoom);
+		Point2D.Double p1 = mapSpace.cXYToLonLat(xMin * tileSize, yMin * tileSize, zoom);
+		Point2D.Double p2 = mapSpace.cXYToLonLat((xMax + 1) * tileSize, (yMax + 1) * tileSize, zoom);
+		double longitudeMin = p1.x;
+		double longitudeMax = p2.x;
+		double latitudeMin = p2.y;
+		double latitudeMax = p1.y;
+
 		mapWriter.append("<OruxTracker " + "xmlns=\"http://oruxtracker.com/app/res/calibration\"\n"
 				+ " versionCode=\"2.1\">\n");
 		mapWriter.append("<MapCalibration layers=\"false\" layerLevel=\"" + map.getZoom() + "\">\n");

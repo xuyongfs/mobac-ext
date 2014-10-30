@@ -14,8 +14,8 @@ import mobac.exceptions.TileException;
 import mobac.gui.mapview.PreviewMap;
 import mobac.mapsources.AbstractHttpMapSource;
 import mobac.mapsources.mapspace.MapSpaceFactory;
-import mobac.mapsources.mapspace.MercatorPower2MapSpace;
 import mobac.program.interfaces.MapSpace;
+import mobac.program.interfaces.MapSpace.MapSpaceType;
 import mobac.program.jaxb.ColorAdapter;
 import mobac.program.model.TileImageType;
 import mobac.utilities.Charsets;
@@ -61,17 +61,23 @@ public class BeanShellHttpMapSource extends AbstractHttpMapSource {
 		i.eval("import mobac.program.interfaces.HttpMapSource.TileUpdate;");
 		i.eval("import java.net.HttpURLConnection;");
 		i.eval("import mobac.utilities.beanshell.*;");
+		i.eval("import mobac.mapsources.mapspace.MapSpaceFactory.MapSpaceType;");
 		i.eval(code);
 		Object o = i.get("name");
 		if (o != null)
 			name = (String) o;
 
+		MapSpaceType mapSpaceType = MapSpaceType.msMercatorSpherical;
+		o = i.get("mapSpaceType");
+		if (o != null)
+			mapSpaceType = (MapSpaceType) o;
+		
+		int tileSize = 256;
 		o = i.get("tileSize");
-		if (o != null) {
-			int tileSize = ((Integer) o).intValue();
-			mapSpace = MapSpaceFactory.getInstance(tileSize, true);
-		} else
-			mapSpace = MercatorPower2MapSpace.INSTANCE_256;
+		if (o != null)
+			tileSize = ((Integer) o).intValue();
+
+		mapSpace = MapSpaceFactory.getInstance(tileSize, mapSpaceType);
 
 		o = i.get("minZoom");
 		if (o != null)

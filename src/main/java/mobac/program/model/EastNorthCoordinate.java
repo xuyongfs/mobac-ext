@@ -42,8 +42,11 @@ public class EastNorthCoordinate {
 
 	public EastNorthCoordinate(MapSpace mapSpace, int zoom, int pixelCoordinateX,
 			int pixelCoordinateY) {
-		this.lat = mapSpace.cYToLat(pixelCoordinateY, zoom);
-		this.lon = mapSpace.cXToLon(pixelCoordinateX, zoom);
+		//this.lat = mapSpace.cYToLat(pixelCoordinateY, zoom);
+		//this.lon = mapSpace.cXToLon(pixelCoordinateX, zoom);
+		Point2D.Double p = mapSpace.cXYToLonLat(pixelCoordinateX, pixelCoordinateX, zoom);
+		this.lon = p.x;
+		this.lat = p.y;
 	}
 
 	public EastNorthCoordinate(double lat, double lon) {
@@ -57,9 +60,10 @@ public class EastNorthCoordinate {
 	}
 
 	public Point toTileCoordinate(MapSpace mapSpace, int zoom) {
-		int x = mapSpace.cLonToX(lon, zoom);
-		int y = mapSpace.cLatToY(lat, zoom);
-		return new Point(x, y);
+		//int x = mapSpace.cLonToX(lon, zoom);
+		//int y = mapSpace.cLatToY(lat, zoom);
+		//return new Point(x, y);
+		return mapSpace.cLonLatToXY(lon, lat, zoom);
 	}
 
 	@Override
