@@ -43,6 +43,8 @@ Mobile Atlas Creator (MOBAC) extended version based on v1.9.16
 #### 示例
 	<forceMercator>true</forceMercator>
 
+***
 
-MOBAC官方网站：http://mobac.sourceforge.net/
-MOBAC Ext交流Q群：209602056
+*MOBAC官方网站：http://mobac.sourceforge.net/*
+
+*MOBAC Ext交流Q群：209602056*
