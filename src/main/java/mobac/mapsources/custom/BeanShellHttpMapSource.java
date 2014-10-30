@@ -61,7 +61,7 @@ public class BeanShellHttpMapSource extends AbstractHttpMapSource {
 		i.eval("import mobac.program.interfaces.HttpMapSource.TileUpdate;");
 		i.eval("import java.net.HttpURLConnection;");
 		i.eval("import mobac.utilities.beanshell.*;");
-		i.eval("import mobac.mapsources.mapspace.MapSpaceFactory.MapSpaceType;");
+		i.eval("import mobac.program.interfaces.MapSpace.MapSpaceType");
 		i.eval(code);
 		Object o = i.get("name");
 		if (o != null)

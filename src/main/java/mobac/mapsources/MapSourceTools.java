@@ -88,6 +88,11 @@ public class MapSourceTools {
 		tmp = tmp.replace("{$y}", Integer.toString(tiley));
 		tmp = tmp.replace("{$z}", Integer.toString(zoom));
 		tmp = tmp.replace("{$q}", MapSourceTools.encodeQuadTree(zoom, tilex, tiley));
+		int antiy = (1 << zoom) - tiley - 1;
+		tmp = tmp.replace("{$-y}", Integer.toString(antiy));
+		tmp = tmp.replace("{$sx}", Integer.toString(tilex / 16));
+		tmp = tmp.replace("{$sy}", Integer.toString(antiy / 16));
+		tmp = tmp.replace("{$part}", Integer.toString((antiy % 10) % 4));
 		return tmp;
 	}
 
