@@ -2,6 +2,7 @@ MOBAC-Ext
 =========
 
 Mobile Atlas Creator (MOBAC) extended version based on v1.9.16
+Open source project website: https://github.com/rilyu/mobac-ext
 
 ## 扩展版新增/修改内容
 
