@@ -24,11 +24,13 @@ Mobile Atlas Creator (MOBAC) extended version based on v1.9.16
 #### XML图源
 - 增加mapSpaceType元素，地图空间类型；
 - 增加httpHeadReferer元素，HTTP请求头Referer属性；
-- 增加httpHeadUserAgent元素，HTTP请求头UserAgent属性。
+- 增加httpHeadUserAgent元素，HTTP请求头UserAgent属性；
+- url元素模版增加{$-y}、{$sx}、{$sy}占位符，分别为坐标在左下角的y轴瓦片编号、x轴子编号、y轴子编号。
 
 ##### 示例
 	<mapSpaceType>msMercatorGCJ02</mapSpaceType>
-	<httpHeadReferer><![CDATA[http://cn.bing.com/ditu/]]></httpHeadReferer>
+	<url><![CDATA[http://p{$part}.map.gtimg.com/maptilesv3/{$z}/{$sx}/{$sy}/{$x}_{$-y}.png]]></url>
+	<httpHeadReferer><![CDATA[http://map.qq.com/]]></httpHeadReferer>
 	<httpHeadUserAgent><![CDATA[Mozilla/5.0 (Windows NT 6.1; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0 Opera 12.16]]></httpHeadUserAgent>
 
 #### 本地瓦片图源
