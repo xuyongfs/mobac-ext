@@ -57,6 +57,7 @@ public abstract class AbstractMultiLayerMapSource implements InitializableMapSou
 	protected MapSourceLoaderInfo loaderInfo = null;
 
 	protected boolean forceMercator = false;
+	protected boolean unionAllZoom = false;
 
 	public AbstractMultiLayerMapSource(String name, TileImageType tileImageType) {
 		this();
@@ -68,30 +69,40 @@ public abstract class AbstractMultiLayerMapSource implements InitializableMapSou
 		log = Logger.getLogger(this.getClass());
 	}
 
+	private void initializeZoom() {
+		if (unionAllZoom) {
+			maxZoom = 0;
+			minZoom = PreviewMap.MAX_ZOOM;
+			for (MapSource ms : mapSources) {
+				maxZoom = Math.max(maxZoom, ms.getMaxZoom());
+				minZoom = Math.min(minZoom, ms.getMinZoom());
+			}
+		} else {
+			maxZoom = PreviewMap.MAX_ZOOM;
+			minZoom = 0;
+			for (MapSource ms : mapSources) {
+				maxZoom = Math.min(maxZoom, ms.getMaxZoom());
+				minZoom = Math.max(minZoom, ms.getMinZoom());
+				//if (!forceMercator && !ms.getMapSpace().equals(mapSpace))
+				//	throw new RuntimeException("Different map spaces used in multi-layer map source");
+			}
+		}
+	}
+
 	protected void initializeValues() {
 		MapSource refMapSource = mapSources[0];
 		mapSpace = forceMercator ? MercatorPower2MapSpace.INSTANCE_256 : refMapSource.getMapSpace();
-		maxZoom = PreviewMap.MAX_ZOOM;
-		minZoom = 0;
-		for (MapSource ms : mapSources) {
-			maxZoom = Math.min(maxZoom, ms.getMaxZoom());
-			minZoom = Math.max(minZoom, ms.getMinZoom());
-			//if (!forceMercator && !ms.getMapSpace().equals(mapSpace))
-			//	throw new RuntimeException("Different map spaces used in multi-layer map source");
-		}
+		initializeZoom();
 	}
 
 	@Override
 	public void initialize() {
 		MapSource refMapSource = mapSources[0];
 		mapSpace = forceMercator ? MercatorPower2MapSpace.INSTANCE_256 : refMapSource.getMapSpace();
-		maxZoom = PreviewMap.MAX_ZOOM;
-		minZoom = 0;
+		initializeZoom();
 		for (MapSource ms : mapSources) {
 			if (ms instanceof InitializableMapSource)
 				((InitializableMapSource) ms).initialize();
-			maxZoom = Math.min(maxZoom, ms.getMaxZoom());
-			minZoom = Math.max(minZoom, ms.getMinZoom());
 		}
 	}
 
@@ -158,15 +169,26 @@ public abstract class AbstractMultiLayerMapSource implements InitializableMapSou
 				int dx = (p1.x - pixelx1) % tileSizeSrc;
 				int dy = (p1.y - pixely1) % tileSizeSrc;
 				int drawx = (dx >= 0) ? - dx : - (tileSizeSrc + dx) ;
+				boolean matchTile = false;
+				IOException tileException = null;
 				for (int i = tilex1; i <= tilex2; i++) {
 					int drawy = (dy >= 0) ? - dy : - (tileSizeSrc + dy);
 					for (int j = tiley1; j <= tiley2; j++) {
-						BufferedImage img = layerMapSource.getTileImage(zoom, i, j, loadMethod);
-						g2.drawImage(img, drawx, drawy, null);
+						BufferedImage img;
+						try {
+							img = layerMapSource.getTileImage(zoom, i, j, loadMethod);
+							g2.drawImage(img, drawx, drawy, null);
+							matchTile = true;
+						} catch (IOException e) {
+							tileException = e;
+							img = null;
+						}
 						drawy += tileSizeSrc;
 					}
 					drawx += tileSizeSrc;
 				}
+				if (!matchTile && tileException != null)
+					throw tileException;
 			} finally {
 				g2.dispose();
 			}
@@ -191,6 +213,8 @@ public abstract class AbstractMultiLayerMapSource implements InitializableMapSou
 			int maxSize = mapSpace.getTileSize();
 			for (int i = 0; i < mapSources.length; i++) {
 				MapSource layerMapSource = mapSources[i];
+				if (zoom < layerMapSource.getMinZoom() || zoom > layerMapSource.getMaxZoom())
+					continue;
 				//BufferedImage layerImage = layerMapSource.getTileImage(zoom, x, y, loadMethod);
 				BufferedImage layerImage = getTileImage(layerMapSource, zoom, x, y, loadMethod);
 				if (layerImage != null) {

@@ -38,7 +38,7 @@ public interface MapSpace {
 	};
 
 	public enum MapSpaceType {
-		msMercatorSpherical, msMercatorEllipsoidal, msMercatorGCJ02
+		msMercatorSpherical, msMercatorEllipsoidal, msMercatorGCJ02, msGeoLatlong
 	};
 
 	public ProjectionCategory getProjectionCategory();

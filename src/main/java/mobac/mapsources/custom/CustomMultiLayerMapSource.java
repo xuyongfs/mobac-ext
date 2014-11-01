@@ -99,6 +99,15 @@ public class CustomMultiLayerMapSource extends AbstractMultiLayerMapSource {
 		this.forceMercator = forceMercator;
 	}
 
+	@XmlElement(name = "unionAllZoom", required = false)
+	public boolean getUnionAllZoom() {
+		return unionAllZoom;
+	}
+
+	public void setUnionAllZoom(boolean unionAllZoom) {
+		this.unionAllZoom = unionAllZoom;
+	}
+
 	@Override
 	public Color getBackgroundColor() {
 		return backgroundColor;

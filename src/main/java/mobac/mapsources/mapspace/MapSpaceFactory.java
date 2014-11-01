@@ -31,6 +31,7 @@ public class MapSpaceFactory {
 		case msMercatorSpherical: return new MercatorPower2MapSpace(tileSize);
 		case msMercatorEllipsoidal: return new MercatorPower2MapSpaceEllipsoidal(tileSize);
 		case msMercatorGCJ02: return new MercatorPower2MapSpaceGCJ02(tileSize);
+		case msGeoLatlong: return new GeoLatlongPower2MapSpace(tileSize);
 		default: return null;
 		}
 	}

@@ -191,7 +191,6 @@ public class CustomMapSource implements HttpMapSource {
 
 	public BufferedImage getTileImage(int zoom, int x, int y, LoadMethod loadMethod) throws IOException,
 			UnrecoverableDownloadException, InterruptedException {
-		
 		byte[] data = getTileData(zoom, x, y, loadMethod);
 
 		if (data == null) {
