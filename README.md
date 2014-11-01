@@ -17,6 +17,7 @@ Mobile Atlas Creator (MOBAC) extended version based on v1.9.16
 - msMercatorSpherical：球形墨卡托投影（默认）
 - msMercatorEllipsoidal：椭球墨卡托投影
 - msMercatorGCJ02：球形墨卡托投影叠加GCJ-02坐标偏移
+- msGeoLatlong：经纬度等间隔投影
 
 ##### 示例
 	mapSpaceType = MapSpaceType.msMercatorGCJ02;
@@ -40,7 +41,8 @@ Mobile Atlas Creator (MOBAC) extended version based on v1.9.16
 	<emptyTileFile><![CDATA[D:\map\empty.png]]></emptyTileFile>
 
 #### 多层图源
-- 增加forceMercator元素，是否强制转换为msMercatorSpherical，转换需要耗费更多的CPU时间，默认为false。
+- 增加forceMercator元素，是否强制转换为msMercatorSpherical，转换需要耗费更多的CPU时间，默认为false；
+- 增加unionAllZoom元素，多层地图图层级别是否为所有图层的级别并集，设置为true时适用于不同级别访问不同的图源，默认为false。
 
 ##### 示例
 	<forceMercator>true</forceMercator>
