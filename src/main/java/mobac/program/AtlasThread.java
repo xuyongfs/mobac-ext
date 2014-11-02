@@ -282,7 +282,16 @@ public class AtlasThread extends Thread implements DownloadJobListener, AtlasCre
 				// we are sure we got all tiles
 				if (!AtlasOutputFormat.TILESTORE.equals(atlas.getOutputFormat())) {
 					String tempSuffix = "MOBAC_" + atlas.getName() + "_" + zoom + "_";
-					File tileArchiveFile = File.createTempFile(tempSuffix, ".tar", DirectoryManager.tempDir);
+					File tempDir = null;
+					String swapDir = Settings.getInstance().getSwapDir();
+					if (swapDir != null) {
+						tempDir = new File(swapDir);
+						if (!tempDir.exists())
+							tempDir = null;
+					}
+					if (tempDir == null) 
+						tempDir = DirectoryManager.tempDir;
+					File tileArchiveFile = File.createTempFile(tempSuffix, ".tar", tempDir);
 					// If something goes wrong the temp file only persists until the VM exits
 					tileArchiveFile.deleteOnExit();
 					log.debug("Writing downloaded tiles to " + tileArchiveFile.getPath());

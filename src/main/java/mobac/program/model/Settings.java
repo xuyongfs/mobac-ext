@@ -106,6 +106,7 @@ public class Settings {
 	private boolean customTileProcessing = false;
 	private Dimension tileSize = new Dimension(256, 256);
 	private TileImageFormat tileImageFormat = TileImageFormat.PNG;
+	private String swapDir = null;
 
 	public CoordinateStringFormat coordinateNumberFormat = CoordinateStringFormat.DEG_LOCAL;
 
@@ -515,6 +516,14 @@ public class Settings {
 
 	public String getVersion() {
 		return version;
+	}
+
+	public String getSwapDir() {
+		return swapDir;
+	}
+
+	public void setSwapDir(String swapDir) {
+		this.swapDir = swapDir;
 	}
 
 }
