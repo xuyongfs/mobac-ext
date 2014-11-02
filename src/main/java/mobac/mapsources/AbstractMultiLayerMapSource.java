@@ -166,13 +166,15 @@ public abstract class AbstractMultiLayerMapSource implements InitializableMapSou
 			BufferedImage imgSrc = new BufferedImage(p2.x - p1.x + 1, p2.y - p1.y + 1, BufferedImage.TYPE_4BYTE_ABGR);
 			Graphics2D g2 = imgSrc.createGraphics();
 			try {
-				int dx = (p1.x - pixelx1) % tileSizeSrc;
-				int dy = (p1.y - pixely1) % tileSizeSrc;
-				int drawx = (dx >= 0) ? - dx : - (tileSizeSrc + dx) ;
+				//int dx = (p1.x - pixelx1) % tileSizeSrc;
+				//int dy = (p1.y - pixely1) % tileSizeSrc;
+				//int drawx = (dx >= 0) ? - dx : - (tileSizeSrc + dx) ;
+				int drawx = (tilex1 * tileSizeSrc) - p1.x;
 				boolean matchTile = false;
 				IOException tileException = null;
 				for (int i = tilex1; i <= tilex2; i++) {
-					int drawy = (dy >= 0) ? - dy : - (tileSizeSrc + dy);
+					//int drawy = (dy >= 0) ? - dy : - (tileSizeSrc + dy);
+					int drawy = (tiley1 * tileSizeSrc) - p1.y;
 					for (int j = tiley1; j <= tiley2; j++) {
 						BufferedImage img;
 						try {

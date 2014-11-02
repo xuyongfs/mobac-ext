@@ -54,7 +54,7 @@ public class MercatorPower2MapSpace implements MapSpace {
 		this.tileSize = tileSize;
 		worldSize = new int[PreviewMap.MAX_ZOOM + 1];
 		for (int zoom = 0; zoom < worldSize.length; zoom++)
-			worldSize[zoom] = tileSize * (1 << zoom);
+			worldSize[zoom] = 256 * (1 << zoom); //级别分辨率与tileSize无关
 	}
 
 	protected double radius(int zoom) {
