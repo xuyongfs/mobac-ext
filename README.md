@@ -7,7 +7,8 @@ Mobile Atlas Creator (MOBAC) extended version based on v1.9.16
 
 2014-11-02
 - MapSpace增加对Geo Lat/Long坐标系支持
-- settings.xml增加swapDir元素，用于指定瓦片存档临时目录，不设置时使用系统默认临时目录
+- 多层图源增加unionAllZoom元素
+- settings.xml增加swapDir元素
 - 修正瓦片大小不是256时的bug
 
 2014-10-30
@@ -52,6 +53,12 @@ Mobile Atlas Creator (MOBAC) extended version based on v1.9.16
 
 ##### 示例
 	<forceMercator>true</forceMercator>
+
+#### settings.xml
+- 增加swapDir元素，用于指定瓦片存档临时目录，不设置时使用系统默认临时目录
+
+##### 示例
+	<swapDir>F:\Temp</swapDir>
 
 ***
 
