@@ -5,10 +5,16 @@ Mobile Atlas Creator (MOBAC) extended version based on v1.9.16
 
 ## 扩展版新增/修改内容
 
+2014-11-02
+- MapSpace增加对Geo Lat/Long坐标系支持
+- settings.xml增加swapDir元素，用于指定瓦片存档临时目录，不设置时使用系统默认临时目录
+- 修正瓦片大小不是256时的bug
+
 2014-10-30
-- MapSpace增加对GCJ-02坐标系支持；
-- 多层图源支持不同类型的MapSpace，且允许强制统一为标准墨卡托坐标系；
-- 本地瓦片图源支持空瓦片。
+- MapSpace增加对GCJ-02坐标系支持
+- 多层图源支持不同类型的MapSpace，且允许强制统一为标准墨卡托坐标系
+- 本地瓦片图源支持空瓦片
+
 
 ### 图源文件元素详述
 
