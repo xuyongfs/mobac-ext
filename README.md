@@ -4,6 +4,9 @@ MOBAC-Ext
 Mobile Atlas Creator (MOBAC) extended version based on v1.9.16
 
 ## 扩展版新增/修改内容
+2014-11-05
+- 增加watermark水印图源
+- 修正GeoLatlong无法直接输出地图册bug
 
 2014-11-02
 - MapSpace增加对Geo Lat/Long坐标系支持
@@ -53,6 +56,8 @@ Mobile Atlas Creator (MOBAC) extended version based on v1.9.16
 
 ##### 示例
 	<forceMercator>true</forceMercator>
+	<unionAllZoom>true</unionAllZoom>
+
 
 #### settings.xml
 - 增加swapDir元素，用于指定瓦片存档临时目录，不设置时使用系统默认临时目录
