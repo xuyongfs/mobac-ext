@@ -65,7 +65,7 @@ Mobile Atlas Creator (MOBAC) extended version based on v1.9.16
 - maxZoom：最大缩放级别，默认为22
 - watermarkFile：水印文件名，必填
 - probability：水印出现几率百分比，取值范围0-100，默认为100
-- mosaic：8x8马赛克掩码，每行使用8个字符标识掩码位，为1时显示水印，为0时不现实，行间使用逗号分隔，默认为空，设置此值后probability将被忽略
+- mosaic：8x8马赛克掩码，每行使用8个字符标识掩码位，为1时显示水印，为0时不显示，行间使用逗号分隔，默认为空，设置此值后probability将被忽略
 
 ##### 示例
 	<watermark>
