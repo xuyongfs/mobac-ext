@@ -3,7 +3,7 @@ MOBAC-Ext
 
 Mobile Atlas Creator (MOBAC) extended version based on v1.9.16
 
-## 扩展版新增/修改内容
+## 扩展版新增/修改内容历史
 2014-11-05
 - 增加watermark水印图源
 - 修正GeoLatlong无法直接输出地图册bug
@@ -58,6 +58,24 @@ Mobile Atlas Creator (MOBAC) extended version based on v1.9.16
 	<forceMercator>true</forceMercator>
 	<unionAllZoom>true</unionAllZoom>
 
+#### 水印图源
+- 图源标签：watermark
+- name：图源名称
+- minZoom：最小缩放级别，默认为0
+- maxZoom：最大缩放级别，默认为22
+- watermarkFile：水印文件名，必填
+- probability：水印出现几率百分比，取值范围0-100，默认为100
+- mosaic：8x8马赛克掩码，每行使用8个字符标识掩码位，为1时显示水印，为0时不现实，行间使用逗号分隔，默认为空，设置此值后probability将被忽略
+
+##### 示例
+	<watermark>
+		<name>水印</name>
+		<minZoom>14</minZoom>
+		<maxZoom>17</maxZoom>
+		<watermarkFile><![CDATA[D:\map\watermark.png]]></watermarkFile>
+		<probability>50</probability>
+		<mosaic>10001000,00010001,00100010,01000100,10001000,00010001,00100010,01000100</mosaic>
+	</watermark>
 
 #### settings.xml
 - 增加swapDir元素，用于指定瓦片存档临时目录，不设置时使用系统默认临时目录
