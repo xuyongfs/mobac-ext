@@ -216,12 +216,13 @@ public class Ozi extends AtlasCreator {
 
 		FileOutputStream fileOs = null;
 		Color backgroundColor = mapSource.getBackgroundColor();
+		int imageType = (backgroundColor.getAlpha() == 255 ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB_PRE);
 		try {
 			fileOs = new FileOutputStream(new File(layerDir, mapName + ".png"));
 			PngXxlWriter pngWriter = new PngXxlWriter(width, height, fileOs);
 
 			for (int y = yMin; y <= yMax; y++) {
-				BufferedImage lineImage = new BufferedImage(width, tileLineHeight, BufferedImage.TYPE_INT_RGB);
+				BufferedImage lineImage = new BufferedImage(width, tileLineHeight, imageType);
 				Graphics2D graphics = lineImage.createGraphics();
 				try {
 					graphics.setColor(backgroundColor);

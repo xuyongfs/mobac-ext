@@ -52,7 +52,8 @@ public class CustomMultiLayerMapSource extends AbstractMultiLayerMapSource {
 			@XmlElement(name = "localTileSQLite", type = CustomLocalTileSQliteMapSource.class),
 			@XmlElement(name = "localTileFiles", type = CustomLocalTileFilesMapSource.class),
 			@XmlElement(name = "localTileZip", type = CustomLocalTileZipMapSource.class),
-			@XmlElement(name = "localImageFile", type = CustomLocalImageFileMapSource.class)})
+			@XmlElement(name = "localImageFile", type = CustomLocalImageFileMapSource.class),
+			@XmlElement(name = "watermark", type = CustomWatermarkMapSource.class)})
 	protected List<CustomMapSource> layers = new ArrayList<CustomMapSource>();
 
 	@XmlList()

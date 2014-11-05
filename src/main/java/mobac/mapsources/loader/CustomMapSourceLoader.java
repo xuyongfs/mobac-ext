@@ -22,6 +22,7 @@ import mobac.mapsources.custom.CustomLocalTileSQliteMapSource;
 import mobac.mapsources.custom.CustomLocalTileZipMapSource;
 import mobac.mapsources.custom.CustomMapSource;
 import mobac.mapsources.custom.CustomMultiLayerMapSource;
+import mobac.mapsources.custom.CustomWatermarkMapSource;
 import mobac.mapsources.custom.CustomWmsMapSource;
 import mobac.program.interfaces.FileBasedMapSource;
 import mobac.program.interfaces.MapSource;
@@ -46,7 +47,7 @@ public class CustomMapSourceLoader implements ValidationEventHandler {
 		try {
 			Class<?>[] customMapClasses = new Class[] { CustomMapSource.class, CustomWmsMapSource.class,
 					CustomMultiLayerMapSource.class, CustomCloudMade.class, CustomLocalTileFilesMapSource.class,
-					CustomLocalTileZipMapSource.class, CustomLocalTileSQliteMapSource.class };
+					CustomLocalTileZipMapSource.class, CustomLocalTileSQliteMapSource.class, CustomWatermarkMapSource.class };
 			JAXBContext context = JAXBContext.newInstance(customMapClasses);
 			unmarshaller = context.createUnmarshaller();
 			unmarshaller.setEventHandler(this);
