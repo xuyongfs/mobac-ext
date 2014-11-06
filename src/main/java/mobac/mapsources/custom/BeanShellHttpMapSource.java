@@ -1,7 +1,10 @@
 package mobac.mapsources.custom;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -10,11 +13,15 @@ import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import javax.imageio.ImageIO;
+
 import mobac.exceptions.TileException;
+import mobac.exceptions.UnrecoverableDownloadException;
 import mobac.gui.mapview.PreviewMap;
 import mobac.mapsources.AbstractHttpMapSource;
 import mobac.mapsources.mapspace.MapSpaceFactory;
 import mobac.program.interfaces.MapSpace;
+import mobac.program.interfaces.MapSource.LoadMethod;
 import mobac.program.interfaces.MapSpace.MapSpaceType;
 import mobac.program.jaxb.ColorAdapter;
 import mobac.program.model.TileImageType;
@@ -34,7 +41,7 @@ public class BeanShellHttpMapSource extends AbstractHttpMapSource {
 
 	private Color backgroundColor = Color.BLACK;
 
-	private boolean ignoreError = false;
+	private boolean ignoreErrors = false;
 
 	public static BeanShellHttpMapSource load(File f) throws EvalError, IOException {
 		FileInputStream in = new FileInputStream(f);
@@ -102,13 +109,14 @@ public class BeanShellHttpMapSource extends AbstractHttpMapSource {
 			tileUpdate = (TileUpdate) o;
 
 		o = i.get("ignoreError");
+		if (o == null) o = i.get("ignoreErrors");
 		if (o != null) {
 			if (o instanceof String) {
-				ignoreError = Boolean.parseBoolean((String) o);
+				ignoreErrors = Boolean.parseBoolean((String) o);
 			} else if (o instanceof Boolean) {
-				ignoreError = ((Boolean) o).booleanValue();
+				ignoreErrors = ((Boolean) o).booleanValue();
 			} else
-				throw new EvalError("Invalid type for \"ignoreError\": " + o.getClass(), null, null);
+				throw new EvalError("Invalid type for \"ignoreError(s)\": " + o.getClass(), null, null);
 		}
 
 		o = i.get("backgroundColor");
@@ -148,12 +156,36 @@ public class BeanShellHttpMapSource extends AbstractHttpMapSource {
 	@Override
 	public byte[] getTileData(int zoom, int x, int y, LoadMethod loadMethod) throws IOException, TileException,
 			InterruptedException {
-		if (!ignoreError)
+		if (!ignoreErrors)
 			return super.getTileData(zoom, x, y, loadMethod);
 		try {
 			return super.getTileData(zoom, x, y, loadMethod);
 		} catch (Exception e) {
 			return null;
+		}
+	}
+
+	@Override
+	public BufferedImage getTileImage(int zoom, int x, int y, LoadMethod loadMethod) throws IOException, TileException, InterruptedException {
+		byte[] data = getTileData(zoom, x, y, loadMethod);
+
+		if (data == null) {
+			if (!ignoreErrors)
+				return null;
+			else {
+				int tileSize = this.getMapSpace().getTileSize();
+				BufferedImage image = new BufferedImage(tileSize, tileSize, BufferedImage.TYPE_4BYTE_ABGR);
+				Graphics g = (Graphics) image.getGraphics();
+				try {
+					g.setColor(backgroundColor);
+					g.fillRect(0, 0, tileSize, tileSize);
+				} finally {
+					g.dispose();
+				}
+				return image;
+			}
+		} else {
+			return ImageIO.read(new ByteArrayInputStream(data));
 		}
 	}
 

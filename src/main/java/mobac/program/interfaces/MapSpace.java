@@ -38,7 +38,20 @@ public interface MapSpace {
 	};
 
 	public enum MapSpaceType {
-		msMercatorSpherical, msMercatorEllipsoidal, msMercatorGCJ02, msGeoLatlong
+		msMercatorSpherical, msMercatorEllipsoidal, msMercatorGCJ02, msGeoLatlong;
+
+		public String getProjection() {
+			switch(this) {
+				case msMercatorSpherical:
+				case msMercatorEllipsoidal:
+				case msMercatorGCJ02:
+					return "Mercator";
+				case msGeoLatlong:
+					return "Latitude/Longitude";
+				default:
+					return "Mercator";
+			}
+		}
 	};
 
 	public ProjectionCategory getProjectionCategory();

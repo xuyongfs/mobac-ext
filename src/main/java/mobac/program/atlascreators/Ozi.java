@@ -144,6 +144,7 @@ public class Ozi extends AtlasCreator {
 			double latitudeMax, int width, int height, double mm1b) {
 
 		StringBuffer sbMap = new StringBuffer();
+		MapSpace mapSpace = mapSource.getMapSpace();
 
 		sbMap.append("OziExplorer Map Data File Version 2.2\r\n");
 		sbMap.append(fileName + "\r\n");
@@ -153,7 +154,7 @@ public class Ozi extends AtlasCreator {
 		sbMap.append("Reserved 1\r\n");
 		sbMap.append("Reserved 2\r\n");
 		sbMap.append("Magnetic Variation,,,E\r\n");
-		sbMap.append("Map Projection,Mercator,PolyCal,No," + "AutoCalOnly,No,BSBUseWPX,No\r\n");
+		sbMap.append("Map Projection," + mapSpace.getMapSpaceType().getProjection() + ",PolyCal,No," + "AutoCalOnly,No,BSBUseWPX,No\r\n");
 
 		String latMax = GeoUtils.getDegMinFormat(latitudeMax, true);
 		String latMin = GeoUtils.getDegMinFormat(latitudeMin, true);

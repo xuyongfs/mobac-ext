@@ -275,7 +275,7 @@ public class OruxMaps extends AtlasCreator {
 		int numXimg = (mapWidth + TILE_SIZE - 1) / TILE_SIZE;
 		int numYimg = (mapHeight + TILE_SIZE - 1) / TILE_SIZE;
 		mapWriter.append("<MapChunks xMax=\"" + numXimg + "\" yMax=\"" + numYimg + "\" datum=\"" + "WGS84"
-				+ "\" projection=\"" + "Mercator" + "\" img_height=\"" + TILE_SIZE + "\" img_width=\"" + TILE_SIZE
+				+ "\" projection=\"" + mapSpace.getMapSpaceType().getProjection() + "\" img_height=\"" + TILE_SIZE + "\" img_width=\"" + TILE_SIZE
 				+ "\" file_name=\"" + mapFileName + "\" />\n");
 		mapWriter.append("<MapDimensions height=\"" + mapHeight + "\" width=\"" + mapWidth + "\" />\n");
 		mapWriter.append("<MapBounds minLat=\"" + latitudeMin + "\" maxLat=\"" + latitudeMax + "\" minLon=\""

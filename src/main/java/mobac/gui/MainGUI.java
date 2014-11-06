@@ -118,7 +118,6 @@ import mobac.gui.settings.SettingsGUI;
 import mobac.mapsources.MapSourcesManager;
 import mobac.program.ProgramInfo;
 import mobac.program.interfaces.AtlasInterface;
-import mobac.program.interfaces.FileBasedMapSource;
 import mobac.program.interfaces.InitializableMapSource;
 import mobac.program.interfaces.MapSource;
 import mobac.program.model.Bookmark;

@@ -135,12 +135,33 @@ public class PreviewMap extends JMapViewer {
 	public void setMapSource(MapSource newMapSource) {
 		if (newMapSource.equals(mapSource))
 			return;
+
 		log.trace("Preview map source changed from " + mapSource + " to " + newMapSource);
+
+		MapSource oldMapSource = mapSource;
+
 		super.setMapSource(newMapSource);
+
+		if (oldMapSource != null
+				&& oldMapSource.getMapSpace().getMapSpaceType() != newMapSource.getMapSpace().getMapSpaceType()) {
+			MapSpace oldMapSpace = oldMapSource.getMapSpace();
+			MapSpace newMapSpace = newMapSource.getMapSpace();
+			Point2D.Double c = oldMapSpace.cXYToLonLat(center.x, center.y, zoom);
+			setDisplayPositionByLatLon(new EastNorthCoordinate(c.y, c.x), zoom);
+			if (iSelectionMin != null && iSelectionMax != null) {
+				Point2D.Double llMin = oldMapSpace.cXYToLonLat(iSelectionMin.x, iSelectionMin.y, MAX_ZOOM);
+				Point2D.Double llMax = oldMapSpace.cXYToLonLat(iSelectionMax.x, iSelectionMax.y, MAX_ZOOM);
+				Point sMin = newMapSpace.cLonLatToXY(llMin.x, llMin.y, MAX_ZOOM);
+				Point sMax = newMapSpace.cLonLatToXY(llMax.x, llMax.y, MAX_ZOOM);
+				setSelectionByTileCoordinate(MAX_ZOOM, sMin, sMax, false);
+			}
+		}
+
 		if (mapEventListeners == null)
 			return;
 		for (MapEventListener listener : mapEventListeners)
 			listener.mapSourceChanged(mapSource);
+
 	}
 
 	protected void zoomChanged(int oldZoom) {
