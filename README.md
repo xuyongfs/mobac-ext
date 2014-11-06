@@ -4,6 +4,11 @@ MOBAC-Ext
 Mobile Atlas Creator (MOBAC) extended version based on v1.9.16
 
 ## 扩展版新增/修改内容历史
+2014-11-06
+- 修正MapSpace = msGeoLatlong图源输出的投影设置问题
+- 修正ignoreErrors在bsh图源无效问题
+- 修正不同投影图源切换时视窗中间点及选择区错位问题
+
 2014-11-05
 - 增加watermark水印图源
 - 修正GeoLatlong无法直接输出地图册bug
