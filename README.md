@@ -4,6 +4,11 @@ MOBAC-Ext
 Mobile Atlas Creator (MOBAC) extended version based on v1.9.16
 
 ## 扩展版新增/修改内容历史
+2014-11-07
+-  localTileFiles图源增加mapSpaceType元素
+-  localTileSQLite图源增加mapSpaceType元素
+-  调整最大瓦片数
+
 2014-11-06
 - 修正MapSpace = msGeoLatlong图源输出的投影设置问题
 - 修正ignoreErrors在bsh图源无效问题
@@ -37,7 +42,7 @@ Mobile Atlas Creator (MOBAC) extended version based on v1.9.16
 ##### 示例
 	mapSpaceType = MapSpaceType.msMercatorGCJ02;
 
-#### XML图源
+#### XML在线图源
 - 增加mapSpaceType元素，地图空间类型；
 - 增加httpHeadReferer元素，HTTP请求头Referer属性；
 - 增加httpHeadUserAgent元素，HTTP请求头UserAgent属性；
@@ -49,11 +54,14 @@ Mobile Atlas Creator (MOBAC) extended version based on v1.9.16
 	<httpHeadReferer><![CDATA[http://map.qq.com/]]></httpHeadReferer>
 	<httpHeadUserAgent><![CDATA[Mozilla/5.0 (Windows NT 6.1; WOW64; rv:2.0) Gecko/20100101 Firefox/4.0 Opera 12.16]]></httpHeadUserAgent>
 
-#### 本地瓦片图源
-- 增加emptyTileFile元素，空瓦片图片文件，当请求的瓦片不存在时返回此元素配置的图片文件。
+#### XML本地图源
+- localTileFiles图源增加emptyTileFile元素，空瓦片图片文件，当请求的瓦片不存在时返回此元素配置的图片文件
+- localTileFiles图源增加加mapSpaceType元素
+- localTileSQLite图源增加加mapSpaceType元素
 
 ##### 示例
 	<emptyTileFile><![CDATA[D:\map\empty.png]]></emptyTileFile>
+	<mapSpaceType>msGeoLatlong</mapSpaceType>
 
 #### 多层图源
 - 增加forceMercator元素，是否强制转换为msMercatorSpherical，转换需要耗费更多的CPU时间，默认为false；
