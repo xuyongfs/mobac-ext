@@ -56,7 +56,7 @@ public class CustomLocalTileFilesMapSource implements FileBasedMapSource {
 
 	private MapSourceLoaderInfo loaderInfo = null;
 
-	private MapSpace mapSpace = MapSpaceFactory.getInstance(256, MapSpaceType.msMercatorSpherical);
+	//private MapSpace mapSpace = MapSpaceFactory.getInstance(256, MapSpaceType.msMercatorSpherical);
 
 	private boolean initialized = false;
 
@@ -86,6 +86,9 @@ public class CustomLocalTileFilesMapSource implements FileBasedMapSource {
 
 	@XmlElement(defaultValue = "")
 	private String emptyTileFile = "";
+
+	@XmlElement(defaultValue = "msMercatorSpherical")
+	private MapSpaceType mapSpaceType = MapSpaceType.msMercatorSpherical;
 
 	public CustomLocalTileFilesMapSource() {
 		super();
@@ -276,7 +279,8 @@ public class CustomLocalTileFilesMapSource implements FileBasedMapSource {
 	}
 
 	public MapSpace getMapSpace() {
-		return mapSpace;
+		//return mapSpace;
+		return MapSpaceFactory.getInstance(256, mapSpaceType);
 	}
 
 	public Color getBackgroundColor() {
@@ -306,5 +310,9 @@ public class CustomLocalTileFilesMapSource implements FileBasedMapSource {
 			return p.matcher(f.getName()).matches();
 		}
 
+	}
+
+	public MapSpaceType getMapSpaceType() {
+		return mapSpaceType;
 	}
 }

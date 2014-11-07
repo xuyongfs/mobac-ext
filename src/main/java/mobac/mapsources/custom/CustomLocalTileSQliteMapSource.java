@@ -88,6 +88,9 @@ public class CustomLocalTileSQliteMapSource implements FileBasedMapSource {
 	@XmlJavaTypeAdapter(ColorAdapter.class)
 	private Color backgroundColor = Color.BLACK;
 
+	@XmlElement(defaultValue = "msMercatorSpherical")
+	private MapSpaceType mapSpaceType = MapSpaceType.msMercatorSpherical;
+
 	private String sqlMaxZoomStatement;
 	private String sqlMinZoomStatement;
 	private String sqlTileStatement;
@@ -98,7 +101,7 @@ public class CustomLocalTileSQliteMapSource implements FileBasedMapSource {
 	 */
 	private Connection conn = null;
 
-	private final MapSpace mapSpace = MapSpaceFactory.getInstance(256, MapSpaceType.msMercatorSpherical);
+	//private final MapSpace mapSpace = MapSpaceFactory.getInstance(256, MapSpaceType.msMercatorSpherical);
 
 	public CustomLocalTileSQliteMapSource() {
 		super();
@@ -294,7 +297,8 @@ public class CustomLocalTileSQliteMapSource implements FileBasedMapSource {
 	}
 
 	public MapSpace getMapSpace() {
-		return mapSpace;
+		//return mapSpace;
+		return MapSpaceFactory.getInstance(256, mapSpaceType);
 	}
 
 	public Color getBackgroundColor() {
@@ -317,5 +321,9 @@ public class CustomLocalTileSQliteMapSource implements FileBasedMapSource {
 		} catch (SQLException e) {
 		}
 		conn = null;
+	}
+
+	public MapSpaceType getMapSpaceType() {
+		return mapSpaceType;
 	}
 }
