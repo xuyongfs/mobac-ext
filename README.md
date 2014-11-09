@@ -4,6 +4,10 @@ MOBAC-Ext
 Mobile Atlas Creator (MOBAC) extended version based on v1.9.16
 
 ## 扩展版新增/修改内容历史
+2014-11-09
+- 图源文件增加hiddenDefault定义图源默认是否隐藏
+- 修正书签坐标异常bug
+
 2014-11-07
 -  localTileFiles图源增加mapSpaceType元素
 -  localTileSQLite图源增加mapSpaceType元素
@@ -33,14 +37,16 @@ Mobile Atlas Creator (MOBAC) extended version based on v1.9.16
 ### 图源文件元素详述
 
 #### BeanShell图源
-增加mapSpaceType变量，地图空间类型，取值范围如下
-- msMercatorSpherical：球形墨卡托投影（默认）
-- msMercatorEllipsoidal：椭球墨卡托投影
-- msMercatorGCJ02：球形墨卡托投影叠加GCJ-02坐标偏移
-- msGeoLatlong：经纬度等间隔投影
+- 增加mapSpaceType变量，地图空间类型，取值范围如下
+	- msMercatorSpherical：球形墨卡托投影（默认）
+	- msMercatorEllipsoidal：椭球墨卡托投影
+	- msMercatorGCJ02：球形墨卡托投影叠加GCJ-02坐标偏移
+	- msGeoLatlong：经纬度等间隔投影
+- 增加hiddenDefault变量，默认为false，设为true时图源默认为disabled状态，即在图源下拉列表中不显示
 
 ##### 示例
 	mapSpaceType = MapSpaceType.msMercatorGCJ02;
+	hiddenDefault = false;
 
 #### XML在线图源
 - 增加mapSpaceType元素，地图空间类型；
