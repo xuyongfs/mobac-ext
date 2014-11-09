@@ -155,8 +155,10 @@ public class CustomWatermarkMapSource implements FileBasedMapSource {
 		initialized = true;
 		if (!watermarkFile.exists())
 			throw new RuntimeException("watermarkFile file does not exist: " + watermarkFile.getAbsolutePath());
-		String[] parts = watermarkFile.getName().split("\\.");
-		tileImageType = TileImageType.getTileImageType(parts[1]);
+		String fileName = watermarkFile.getName();
+		int indexPeriod = fileName.lastIndexOf(".");
+		String fileExt = (indexPeriod == -1 ? "" : fileName.substring(indexPeriod + 1).toLowerCase());
+		tileImageType = TileImageType.getTileImageType(fileExt);
 		if (mosaic != null) {
 			mosaicMask = new byte[8];
 			String[] masks = mosaic.split(",");
