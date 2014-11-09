@@ -111,4 +111,9 @@ public class StandardMapSourceLayer implements MapSource {
 		return mapSource.equals(obj);
 	}
 
+	@Override
+	public boolean getHiddenDefault() {
+		return false;
+	}
+
 }

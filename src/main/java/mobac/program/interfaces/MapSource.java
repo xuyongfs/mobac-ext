@@ -111,4 +111,5 @@ public interface MapSource {
 
 	public void setLoaderInfo(MapSourceLoaderInfo loaderInfo);
 
+	public boolean getHiddenDefault();
 }

@@ -121,4 +121,9 @@ public class DebugMapSource implements MapSource {
 		return getName();
 	}
 
+	@Override
+	public boolean getHiddenDefault() {
+		return false;
+	}
+
 }

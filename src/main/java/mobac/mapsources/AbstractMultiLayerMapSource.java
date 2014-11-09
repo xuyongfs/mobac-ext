@@ -276,4 +276,8 @@ public abstract class AbstractMultiLayerMapSource implements InitializableMapSou
 		this.loaderInfo = loaderInfo;
 	}
 
+	@Override
+	public boolean getHiddenDefault() {
+		return false;
+	}
 }

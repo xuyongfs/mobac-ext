@@ -44,7 +44,7 @@ public class EastNorthCoordinate {
 			int pixelCoordinateY) {
 		//this.lat = mapSpace.cYToLat(pixelCoordinateY, zoom);
 		//this.lon = mapSpace.cXToLon(pixelCoordinateX, zoom);
-		Point2D.Double p = mapSpace.cXYToLonLat(pixelCoordinateX, pixelCoordinateX, zoom);
+		Point2D.Double p = mapSpace.cXYToLonLat(pixelCoordinateX, pixelCoordinateY, zoom);
 		this.lon = p.x;
 		this.lat = p.y;
 	}

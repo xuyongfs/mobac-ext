@@ -218,4 +218,8 @@ public abstract class AbstractHttpMapSource implements HttpMapSource {
 		return other.getName().equals(getName());
 	}
 
+	@Override
+	public boolean getHiddenDefault() {
+		return false;
+	}
 }

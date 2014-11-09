@@ -195,7 +195,7 @@ public class DefaultMapSourcesManager extends MapSourcesManager {
 		notEnabledMapSources.removeAll(Settings.getInstance().mapSourcesDisabled);
 		for (String mapSourceName : notEnabledMapSources) {
 			MapSource ms = getSourceByName(mapSourceName);
-			if (ms != null) {
+			if (ms != null && !ms.getHiddenDefault()) {
 				mapSources.add(ms);
 			}
 		}
@@ -207,13 +207,24 @@ public class DefaultMapSourcesManager extends MapSourcesManager {
 	@Override
 	public Vector<MapSource> getDisabledMapSources() {
 		Vector<String> disabledMapSources = Settings.getInstance().mapSourcesDisabled;
-		Vector<MapSource> mapSources = new Vector<MapSource>(disabledMapSources.size());
+		Vector<MapSource> mapSources = new Vector<MapSource>(allMapSources.size());
 		for (String mapSourceName : disabledMapSources) {
 			MapSource ms = getSourceByName(mapSourceName);
 			if (ms != null) {
 				mapSources.add(ms);
 			}
 		}
+
+		TreeSet<String> notEnabledMapSources = new TreeSet<String>(allMapSources.keySet());
+		notEnabledMapSources.removeAll(Settings.getInstance().mapSourcesEnabled);
+		notEnabledMapSources.removeAll(Settings.getInstance().mapSourcesDisabled);
+		for (String mapSourceName : notEnabledMapSources) {
+			MapSource ms = getSourceByName(mapSourceName);
+			if (ms != null && ms.getHiddenDefault()) {
+				mapSources.add(ms);
+			}
+		}
+
 		return mapSources;
 	}
 

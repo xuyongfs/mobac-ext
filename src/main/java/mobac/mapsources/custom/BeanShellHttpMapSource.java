@@ -43,6 +43,8 @@ public class BeanShellHttpMapSource extends AbstractHttpMapSource {
 
 	private boolean ignoreErrors = false;
 
+	private boolean hiddenDefault = false;
+
 	public static BeanShellHttpMapSource load(File f) throws EvalError, IOException {
 		FileInputStream in = new FileInputStream(f);
 		try {
@@ -126,6 +128,16 @@ public class BeanShellHttpMapSource extends AbstractHttpMapSource {
 			} catch (javax.xml.bind.UnmarshalException e) {
 				throw new EvalError(e.getMessage(), null, null);
 			}
+
+		o = i.get("hiddenDefault");
+		if (o != null) {
+			if (o instanceof String) {
+				hiddenDefault = Boolean.parseBoolean((String) o);
+			} else if (o instanceof Boolean) {
+				hiddenDefault = ((Boolean) o).booleanValue();
+			}
+		}
+		
 	}
 
 	@Override
@@ -231,4 +243,8 @@ public class BeanShellHttpMapSource extends AbstractHttpMapSource {
 		return backgroundColor;
 	}
 
+	@Override
+	public boolean getHiddenDefault() {
+		return hiddenDefault;
+	}
 }

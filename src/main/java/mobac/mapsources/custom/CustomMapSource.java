@@ -99,6 +99,9 @@ public class CustomMapSource implements HttpMapSource {
 	@XmlElement(defaultValue = "")
 	private String httpHeadUserAgent = "";
 
+	@XmlElement(defaultValue = "false")
+	private boolean hiddenDefault = false;
+
 	private MapSourceLoaderInfo loaderInfo = null;
 
 	/**
@@ -252,6 +255,11 @@ public class CustomMapSource implements HttpMapSource {
 
 	public String getHttpHeadUserAgent() {
 		return httpHeadUserAgent;
+	}
+
+	@Override
+	public boolean getHiddenDefault() {
+		return hiddenDefault;
 	}
 
 }

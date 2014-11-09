@@ -63,7 +63,10 @@ public class CustomWatermarkMapSource implements FileBasedMapSource {
 	
 	@XmlElement
 	private String mosaic = null;
-	
+
+	@XmlElement(defaultValue = "false")
+	private boolean hiddenDefault = false;
+
 	public CustomWatermarkMapSource() {
 		super();
 	}
@@ -175,6 +178,11 @@ public class CustomWatermarkMapSource implements FileBasedMapSource {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	@Override
+	public boolean getHiddenDefault() {
+		return hiddenDefault;
 	}
 
 }

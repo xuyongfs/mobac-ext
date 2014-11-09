@@ -90,6 +90,9 @@ public class CustomLocalTileFilesMapSource implements FileBasedMapSource {
 	@XmlElement(defaultValue = "msMercatorSpherical")
 	private MapSpaceType mapSpaceType = MapSpaceType.msMercatorSpherical;
 
+	@XmlElement(defaultValue = "false")
+	private boolean hiddenDefault = false;
+
 	public CustomLocalTileFilesMapSource() {
 		super();
 	}
@@ -314,5 +317,10 @@ public class CustomLocalTileFilesMapSource implements FileBasedMapSource {
 
 	public MapSpaceType getMapSpaceType() {
 		return mapSpaceType;
+	}
+
+	@Override
+	public boolean getHiddenDefault() {
+		return hiddenDefault;
 	}
 }

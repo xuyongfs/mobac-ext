@@ -98,4 +98,9 @@ public class SimpleMapSource implements MapSource {
 		return "";
 	}
 
+	@Override
+	public boolean getHiddenDefault() {
+		return false;
+	}
+
 }

@@ -134,4 +134,9 @@ public class DebugTransparentLocalMapSource implements MapSource, FileBasedMapSo
 	@Override
 	public void setLoaderInfo(MapSourceLoaderInfo loaderInfo) {
 	}
+
+	@Override
+	public boolean getHiddenDefault() {
+		return false;
+	}
 }

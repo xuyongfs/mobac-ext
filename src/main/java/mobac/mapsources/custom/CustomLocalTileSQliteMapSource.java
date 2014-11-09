@@ -91,6 +91,9 @@ public class CustomLocalTileSQliteMapSource implements FileBasedMapSource {
 	@XmlElement(defaultValue = "msMercatorSpherical")
 	private MapSpaceType mapSpaceType = MapSpaceType.msMercatorSpherical;
 
+	@XmlElement(defaultValue = "false")
+	private boolean hiddenDefault = false;
+
 	private String sqlMaxZoomStatement;
 	private String sqlMinZoomStatement;
 	private String sqlTileStatement;
@@ -325,5 +328,10 @@ public class CustomLocalTileSQliteMapSource implements FileBasedMapSource {
 
 	public MapSpaceType getMapSpaceType() {
 		return mapSpaceType;
+	}
+
+	@Override
+	public boolean getHiddenDefault() {
+		return hiddenDefault;
 	}
 }

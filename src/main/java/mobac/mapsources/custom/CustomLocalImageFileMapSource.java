@@ -97,6 +97,9 @@ public class CustomLocalImageFileMapSource implements FileBasedMapSource {
 	@XmlJavaTypeAdapter(ColorAdapter.class)
 	private Color backgroundColor = Color.BLACK;
 
+	@XmlElement(defaultValue = "false")
+	private boolean hiddenDefault = false;
+
 	public CustomLocalImageFileMapSource() {
 		super();
 	}
@@ -280,6 +283,11 @@ public class CustomLocalImageFileMapSource implements FileBasedMapSource {
 
 	public void setLoaderInfo(MapSourceLoaderInfo loaderInfo) {
 		this.loaderInfo = loaderInfo;
+	}
+
+	@Override
+	public boolean getHiddenDefault() {
+		return hiddenDefault;
 	}
 
 }

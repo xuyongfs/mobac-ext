@@ -134,4 +134,9 @@ public class DebugRandomLocalMapSource implements MapSource, FileBasedMapSource 
 	@Override
 	public void setLoaderInfo(MapSourceLoaderInfo loaderInfo) {
 	}
+
+	@Override
+	public boolean getHiddenDefault() {
+		return false;
+	}
 }
