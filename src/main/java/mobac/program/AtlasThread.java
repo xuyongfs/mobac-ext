@@ -173,10 +173,10 @@ public class AtlasThread extends Thread implements DownloadJobListener, AtlasCre
 			}
 		}
 
-		if (totalNrOfOnlineTiles > 5000000) {
+		if (totalNrOfOnlineTiles > 6000000) {
 			// NumberFormat f = DecimalFormat.getInstance();
 			JOptionPane.showMessageDialog(null, String.format(
-					I18nUtils.localizedStringForKey("msg_too_many_tiles_msg"), 5000000, totalNrOfOnlineTiles), I18nUtils
+					I18nUtils.localizedStringForKey("msg_too_many_tiles_msg"), 6000000, totalNrOfOnlineTiles), I18nUtils
 					.localizedStringForKey("msg_too_many_tiles_title"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
